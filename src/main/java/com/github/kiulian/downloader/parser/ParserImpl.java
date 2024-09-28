@@ -75,17 +75,17 @@ public class ParserImpl implements Parser {
 
         String body =
                 "{" +
-                "  \"videoId\": \"" + videoId + "\"," +
-                "  \"context\": {" +
-                "    \"client\": {" +
-                "      \"hl\": \"en\"," +
-                "      \"gl\": \"US\"," +
-                "      \"clientName\": \"ANDROID_TESTSUITE\"," +
-                "      \"clientVersion\": \"1.9\"," +
-                "      \"androidSdkVersion\": 31" +
-                "    }" +
-                "  }" +
-                "}";
+                        "  \"videoId\": \"" + videoId + "\"," +
+                        "  \"context\": {" +
+                        "    \"client\": {" +
+                        "      \"hl\": \"en\"," +
+                        "      \"gl\": \"US\"," +
+                        "      \"clientName\": \"ANDROID_CREATOR\"," +
+                        "      \"clientVersion\": \"22.36.102\"," +
+                        "      \"androidSdkVersion\": 30" +
+                        "    }" +
+                        "  }" +
+                        "}";
 
         RequestWebpage request = new RequestWebpage(url, "POST", body)
                 .header("Content-Type", "application/json");
