@@ -1,8 +1,6 @@
 package com.github.kiulian.downloader;
 
 
-
-
 public abstract class YoutubeException extends Exception {
     private YoutubeException(String message) {
         super(message);
@@ -25,6 +23,12 @@ public abstract class YoutubeException extends Exception {
     public static class CipherException extends YoutubeException {
 
         public CipherException(String message) {
+            super(message);
+        }
+    }
+
+    public static class InvalidJsUrlException extends YoutubeException.CipherException {
+        public InvalidJsUrlException(String message) {
             super(message);
         }
     }

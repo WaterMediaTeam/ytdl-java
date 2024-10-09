@@ -1,6 +1,8 @@
 package com.github.kiulian.downloader.downloader.request;
 
 import com.github.kiulian.downloader.downloader.YoutubeCallback;
+import com.github.kiulian.downloader.downloader.client.ClientType;
+import com.github.kiulian.downloader.downloader.client.Clients;
 import com.github.kiulian.downloader.downloader.proxy.ProxyAuthenticator;
 import com.github.kiulian.downloader.downloader.proxy.ProxyCredentialsImpl;
 
@@ -15,6 +17,7 @@ public abstract class Request<T extends Request<T, S>, S> {
     private boolean async;
     private Integer maxRetries;
     private Proxy proxy;
+    private ClientType clientType = Clients.highestPriorityClientType();
 
     public T proxy(String host, int port) {
         this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
@@ -71,5 +74,14 @@ public abstract class Request<T extends Request<T, S>, S> {
 
     public boolean isAsync() {
         return async;
+    }
+
+    public T clientType(ClientType client) {
+        this.clientType = client;
+        return (T) this;
+    }
+
+    public ClientType getClientType() {
+        return clientType;
     }
 }
