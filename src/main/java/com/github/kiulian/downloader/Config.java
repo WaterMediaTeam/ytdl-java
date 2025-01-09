@@ -18,7 +18,7 @@ public class Config {
         private static final String NAME_PREFIX = "yt-downloader-";
         private final AtomicInteger threadNumber = new AtomicInteger(0);
 
-        public Thread newThread(Runnable r) {
+        public Thread newThread(final Runnable r) {
             final Thread thread = new Thread(r, NAME_PREFIX + this.threadNumber.getAndIncrement());
             thread.setDaemon(true);
             return thread;
@@ -30,14 +30,14 @@ public class Config {
     private static final int DEFAULT_RETRY_ON_FAILURE = 0;
 
     private Map<String, String> headers;
-    private int maxRetries;
+    private int retries;
     private boolean compressionEnabled;
     private ExecutorService executorService;
     private Proxy proxy;
 
     private Config(Builder builder) {
         this.headers = builder.headers;
-        this.maxRetries = builder.maxRetries;
+        this.retries = builder.retries;
         this.compressionEnabled = builder.compressionEnabled;
         this.executorService = builder.executorService;
         this.proxy = builder.proxy;
@@ -45,20 +45,20 @@ public class Config {
 
     private Config() {
         this.headers = new HashMap<>();
-        this.maxRetries = DEFAULT_RETRY_ON_FAILURE;
+        this.retries = DEFAULT_RETRY_ON_FAILURE;
         this.compressionEnabled = true;
         this.executorService = null;
 
-        setHeader("User-Agent", DEFAULT_USER_AGENT);
-        setHeader("Accept-language", DEFAULT_ACCEPT_LANG);
+        this.setHeader("User-Agent", DEFAULT_USER_AGENT);
+        this.setHeader("Accept-language", DEFAULT_ACCEPT_LANG);
     }
 
     static Config buildDefault() {
         return new Config();
     }
 
-    public void setMaxRetries(int maxRetries) {
-        this.maxRetries = maxRetries;
+    public void setRetries(int retries) {
+        this.retries = retries;
     }
 
     public void setCompressionEnabled(boolean enabled) {
@@ -96,8 +96,8 @@ public class Config {
         return this.executorService;
     }
 
-    public int getMaxRetries() {
-        return maxRetries;
+    public int getRetries() {
+        return retries;
     }
 
     public boolean isCompressionEnabled() {
@@ -114,13 +114,13 @@ public class Config {
 
     public static class Builder {
         private Map<String, String> headers = new HashMap<>();
-        private int maxRetries = DEFAULT_RETRY_ON_FAILURE;
+        private int retries = DEFAULT_RETRY_ON_FAILURE;
         private boolean compressionEnabled = true;
         private ExecutorService executorService;
         private Proxy proxy;
 
         public Builder maxRetries(int maxRetries) {
-            this.maxRetries = maxRetries;
+            this.retries = maxRetries;
             return this;
         }
 

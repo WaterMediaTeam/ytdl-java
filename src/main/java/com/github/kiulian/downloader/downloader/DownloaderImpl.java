@@ -45,7 +45,7 @@ public class DownloaderImpl implements Downloader {
         String downloadUrl = request.getDownloadUrl();
         Map<String, String> headers = request.getHeaders();
         YoutubeCallback<String> callback = request.getCallback();
-        int maxRetries = request.getMaxRetries() != null ? request.getMaxRetries() : config.getMaxRetries();
+        int maxRetries = request.getRetries() != 0 ? request.getRetries() : config.getRetries();
         Proxy proxy = request.getProxy();
 
         IOException exception;
@@ -96,9 +96,8 @@ public class DownloaderImpl implements Downloader {
                 exception = null;
             } catch (IOException e) {
                 exception = e;
-                maxRetries--;
             }
-        } while (exception != null && maxRetries > 0);
+        } while (exception != null && maxRetries-- > 0);
 
         if (exception != null) {
             if (callback != null) {
@@ -172,7 +171,7 @@ public class DownloaderImpl implements Downloader {
     private void download(Request<?, ?> request, Format format, OutputStream os) throws IOException {
         Map<String, String> headers = request.getHeaders();
         YoutubeCallback<?> callback = request.getCallback();
-        int maxRetries = request.getMaxRetries() != null ? request.getMaxRetries() : config.getMaxRetries();
+        int retries = request.getRetries() != 0 ? request.getRetries() : config.getRetries();
         Proxy proxy = request.getProxy();
 
         IOException exception;
@@ -190,7 +189,7 @@ public class DownloaderImpl implements Downloader {
             } finally {
                 closeSilently(os);
             }
-        } while (exception != null && maxRetries > 0);
+        } while (exception != null && retries > 0);
 
         if (exception != null) {
             if (callback != null) {

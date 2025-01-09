@@ -15,7 +15,7 @@ public abstract class Request<T extends Request<T, S>, S> {
     protected Map<String, String> headers;
     private YoutubeCallback<S> callback;
     private boolean async;
-    private Integer maxRetries;
+    private int retries;
     private Proxy proxy;
     private Client client = DefaultClients.defaultClientType();
 
@@ -37,13 +37,13 @@ public abstract class Request<T extends Request<T, S>, S> {
         return proxy;
     }
 
-    public T maxRetries(int maxRetries) {
-        this.maxRetries = maxRetries;
+    public T retries(int maxRetries) {
+        this.retries = maxRetries;
         return (T) this;
     }
 
-    public Integer getMaxRetries() {
-        return maxRetries;
+    public int getRetries() {
+        return retries;
     }
 
     public T callback(YoutubeCallback<S> callback) {
