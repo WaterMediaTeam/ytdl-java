@@ -8,6 +8,11 @@ base {
     libsDirectory = new File("builtJars/")
 }
 
+test {
+    useJUnitPlatform()
+    dryRun = true
+}
+
 java {
     withSourcesJar()
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -50,8 +55,4 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
-}
-
-tasks.withType(Test) {
-    useJUnitPlatform()
 }
