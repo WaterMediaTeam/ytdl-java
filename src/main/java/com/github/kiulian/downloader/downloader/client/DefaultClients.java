@@ -74,11 +74,11 @@ public enum DefaultClients implements Client {
     private final String body;
     private final String version;
 
-    public static void setDefaultClientType(Client client) {
+    public static void setDefaultClient(Client client) {
         DEFAULT = client;
     }
 
-    public static Client defaultClientType() {
+    public static Client defaultClient() {
         return DEFAULT;
     }
 

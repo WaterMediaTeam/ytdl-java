@@ -29,7 +29,7 @@ public class RequestSearchResult extends Request<RequestSearchResult, SearchResu
         List<SearchField> filters = null;
         if (!filterFields.isEmpty()) {
             filters = new ArrayList<>(filterFields.values());
-            filters.sort((f1, f2) -> f1.category() - f2.category());
+            filters.sort(Comparator.comparingInt(SearchField::category));
             for (SearchField filter : filters) {
                 filterLength += filter.length();
             }

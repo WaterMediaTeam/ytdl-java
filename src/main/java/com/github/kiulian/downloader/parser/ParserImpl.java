@@ -92,11 +92,11 @@ public class ParserImpl implements Parser {
     public Response<VideoInfo> parseVideo(RequestVideoInfo request) {
         if (request.isAsync()) {
             ExecutorService executorService = config.getExecutorService();
-            Future<VideoInfo> result = executorService.submit(() -> parseVideo(request.getVideoId(), request.getCallback(), request.getClient()));
+            Future<VideoInfo> result = executorService.submit(() -> this.parseVideo(request.getVideoId(), request.getCallback(), request.getClient()));
             return ResponseImpl.fromFuture(result);
         }
         try {
-            VideoInfo result = parseVideo(request.getVideoId(), request.getCallback(), request.getClient());
+            VideoInfo result = this.parseVideo(request.getVideoId(), request.getCallback(), request.getClient());
             return ResponseImpl.from(result);
         } catch (YoutubeException e) {
             return ResponseImpl.error(e);

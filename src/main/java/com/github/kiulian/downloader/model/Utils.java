@@ -15,7 +15,7 @@ public class Utils {
     private static final char[] ILLEGAL_FILENAME_CHARACTERS = {'/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':'};
 
     public static String removeIllegalChars(String fileName) {
-        for (char c : ILLEGAL_FILENAME_CHARACTERS) {
+        for (char c: ILLEGAL_FILENAME_CHARACTERS) {
             fileName = fileName.replace(c, '_');
         }
         return fileName;

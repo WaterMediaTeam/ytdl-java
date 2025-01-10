@@ -8,8 +8,8 @@ import com.github.kiulian.downloader.downloader.proxy.ProxyCredentialsImpl;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class Request<T extends Request<T, S>, S> {
     protected Map<String, String> headers;
@@ -17,7 +17,7 @@ public abstract class Request<T extends Request<T, S>, S> {
     private boolean async;
     private int retries;
     private Proxy proxy;
-    private Client client = DefaultClients.defaultClientType();
+    private Client client = DefaultClients.defaultClient();
 
     public T proxy(String host, int port) {
         this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
