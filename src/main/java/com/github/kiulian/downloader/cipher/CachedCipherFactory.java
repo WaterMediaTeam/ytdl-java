@@ -111,6 +111,7 @@ public class CachedCipherFactory implements CipherFactory {
      * @throws YoutubeException if list of functions could not be found
      */
     private List<JsFunction> getTransformFunctions(final String js) throws YoutubeException {
+        System.out.println("JS: " + js);
         final String name = this.getInitialFunctionName(js).replaceAll("[^$A-Za-z0-9_]", "");
 
         final Pattern pattern = Pattern.compile(Pattern.quote(name) + "=function\\(\\w\\)\\{[a-z=\\.\\(\\\"\\)]*;(.*);(?:.+)\\}");
