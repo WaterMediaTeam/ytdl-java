@@ -1,0 +1,7 @@
+# configuration file for building snapshots and releases with jitpack.io
+jdk:
+  - openjdk21
+before_install:
+  - ./scripts/jitpack_setup.sh
+install:
+  - gradlew build
