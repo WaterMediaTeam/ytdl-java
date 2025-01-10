@@ -122,7 +122,11 @@ public class CachedCipherFactory implements CipherFactory {
         }
         final String name = this.getInitialFunctionName(js).replaceAll("[^$A-Za-z0-9_]", "");
 
+        System.out.println("Search name: " + name);
+
         final Pattern pattern = Pattern.compile(Pattern.quote(name) + "=function\\(\\w\\)\\{[a-z=\\.\\(\\\"\\)]*;(.*);(?:.+)\\}");
+
+        System.out.println("Search pattern: " + pattern);
 
         final Matcher matcher = pattern.matcher(js);
         if (matcher.find()) {
