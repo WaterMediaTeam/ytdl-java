@@ -31,6 +31,26 @@ dependencies {
     implementation "com.alibaba:fastjson:${fastjsonVersion}"
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'Java youtube video downloader'
+                description = 'Java parser for retrieving YouTube video meta info'
+                licenses {
+                    license {
+                        name = 'The Unlicense'
+                        url = 'http://unlicense.org/'
+                        distribution = 'repo'
+                    }
+                }
+            }
+        }
+    }
+}
+
 repositories {
     maven {
         url 'https://jitpack.io'
