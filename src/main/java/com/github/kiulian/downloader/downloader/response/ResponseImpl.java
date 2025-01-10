@@ -4,20 +4,20 @@ import java.util.concurrent.*;
 
 public class ResponseImpl<T> implements Response<T> {
 
-    private Future<T> data;
+    private final Future<T> data;
     private Throwable error;
 
-    private ResponseImpl(Future<T> data, Throwable error) {
+    private ResponseImpl(final Future<T> data, final Throwable error) {
         this.data = data;
         this.error = error;
     }
 
-    public static <T> ResponseImpl<T> from(T data) {
-        Future<T> future = new Future<T>() {
+    public static <T> ResponseImpl<T> from(final T data) {
+        final Future<T> future = new Future<T>() {
 
             @Override
-            public T get(long timeout, TimeUnit unit) {
-                return get();
+            public T get(final long timeout, final TimeUnit unit) {
+                return this.get();
             }
 
             @Override
@@ -26,7 +26,7 @@ public class ResponseImpl<T> implements Response<T> {
             }
 
             @Override
-            public boolean cancel(boolean mayInterruptIfRunning) {
+            public boolean cancel(final boolean mayInterruptIfRunning) {
                 return false;
             }
 
@@ -44,11 +44,11 @@ public class ResponseImpl<T> implements Response<T> {
         return fromFuture(future);
     }
 
-    public static <T> ResponseImpl<T> fromFuture(Future<T> data) {
+    public static <T> ResponseImpl<T> fromFuture(final Future<T> data) {
         return new ResponseImpl<>(data, null);
     }
 
-    public static <T> ResponseImpl<T> error(Throwable throwable) {
+    public static <T> ResponseImpl<T> error(final Throwable throwable) {
         return new ResponseImpl<>(null, throwable);
     }
 
@@ -58,11 +58,11 @@ public class ResponseImpl<T> implements Response<T> {
      */
     @Override
     public T data() {
-        if (data != null) {
+        if (this.data != null) {
             try {
-                return data.get();
-            } catch (InterruptedException | ExecutionException e) {
-                error = e;
+                return this.data.get();
+            } catch (final InterruptedException | ExecutionException e) {
+                this.error = e;
             }
         }
         return null;
@@ -74,12 +74,12 @@ public class ResponseImpl<T> implements Response<T> {
      * NOTE: This implementation will block the thread if request is async
      */
     @Override
-    public T data(long timeout, TimeUnit unit) throws TimeoutException {
-        if (data != null) {
+    public T data(final long timeout, final TimeUnit unit) throws TimeoutException {
+        if (this.data != null) {
             try {
-                return data.get(timeout, unit);
-            } catch (InterruptedException | ExecutionException e) {
-                error = e;
+                return this.data.get(timeout, unit);
+            } catch (final InterruptedException | ExecutionException e) {
+                this.error = e;
             }
         }
         return null;
@@ -91,35 +91,35 @@ public class ResponseImpl<T> implements Response<T> {
      */
     @Override
     public Throwable error() {
-        if (data != null) {
+        if (this.data != null) {
             try {
-                data.get();
-            } catch (InterruptedException | ExecutionException e) {
-                error = e;
+                this.data.get();
+            } catch (final InterruptedException | ExecutionException e) {
+                this.error = e;
                 return e;
             }
         }
-        return error;
+        return this.error;
     }
 
     @Override
     public ResponseStatus status() {
-        if (error != null) {
+        if (this.error != null) {
             return ResponseStatus.error;
         }
-        if (data != null) {
-            if (data.isCancelled()) {
+        if (this.data != null) {
+            if (this.data.isCancelled()) {
                 return ResponseStatus.canceled;
             }
 
             try {
-                ((Future<?>) data).get(1, TimeUnit.MILLISECONDS);
-            } catch (CancellationException e) {
+                ((Future<?>) this.data).get(1, TimeUnit.MILLISECONDS);
+            } catch (final CancellationException e) {
                 return ResponseStatus.canceled;
-            } catch (TimeoutException e) {
+            } catch (final TimeoutException e) {
                 return ResponseStatus.downloading;
-            } catch (ExecutionException | InterruptedException e) {
-                error = e;
+            } catch (final ExecutionException | InterruptedException e) {
+                this.error = e;
                 return ResponseStatus.error;
             }
             return ResponseStatus.completed;
@@ -133,16 +133,16 @@ public class ResponseImpl<T> implements Response<T> {
      */
     @Override
     public boolean ok() {
-        if (error != null) {
+        if (this.error != null) {
             return false;
         }
 
         try {
-            ((Future<?>) data).get();
+            ((Future<?>) this.data).get();
             return true;
-        } catch (CancellationException ignored) {
-        } catch (Exception e) {
-            error = e;
+        } catch (final CancellationException ignored) {
+        } catch (final Exception e) {
+            this.error = e;
         }
 
         return false;
@@ -150,8 +150,8 @@ public class ResponseImpl<T> implements Response<T> {
 
     @Override
     public boolean cancel() {
-        if (error != null)
+        if (this.error != null)
             return false;
-        return data.cancel(true);
+        return this.data.cancel(true);
     }
 }

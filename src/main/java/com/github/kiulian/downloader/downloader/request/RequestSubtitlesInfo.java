@@ -9,11 +9,11 @@ public class RequestSubtitlesInfo extends Request<RequestSubtitlesInfo, List<Sub
 
     private final String videoId;
 
-    public RequestSubtitlesInfo(String videoId) {
+    public RequestSubtitlesInfo(final String videoId) {
         this.videoId = videoId;
     }
 
     public String getVideoId() {
-        return videoId;
+        return this.videoId;
     }
 }

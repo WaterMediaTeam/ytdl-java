@@ -7,31 +7,31 @@ import com.github.kiulian.downloader.model.Filter;
 
 public class PlaylistInfo {
 
-    private PlaylistDetails details;
-    private List<PlaylistVideoDetails> videos;
+    private final PlaylistDetails details;
+    private final List<PlaylistVideoDetails> videos;
 
-    public PlaylistInfo(PlaylistDetails details, List<PlaylistVideoDetails> videos) {
+    public PlaylistInfo(final PlaylistDetails details, final List<PlaylistVideoDetails> videos) {
         this.details = details;
         this.videos = videos;
     }
 
     public PlaylistDetails details() {
-        return details;
+        return this.details;
     }
 
     public List<PlaylistVideoDetails> videos() {
-        return videos;
+        return this.videos;
     }
 
-    public PlaylistVideoDetails findVideoById(String videoId) {
-        for (PlaylistVideoDetails video : videos) {
+    public PlaylistVideoDetails findVideoById(final String videoId) {
+        for (final PlaylistVideoDetails video : this.videos) {
             if (video.videoId().equals(videoId))
                 return video;
         }
         return null;
     }
 
-    public List<PlaylistVideoDetails> findVideos(Filter<PlaylistVideoDetails> filter) {
-        return filter.select(videos);
+    public List<PlaylistVideoDetails> findVideos(final Filter<PlaylistVideoDetails> filter) {
+        return filter.select(this.videos);
     }
 }

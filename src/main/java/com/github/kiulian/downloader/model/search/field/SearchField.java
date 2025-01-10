@@ -6,14 +6,14 @@ public interface SearchField {
     String name();
 
     default int category() {
-        return data()[0] & 0xff;
+        return this.data()[0] & 0xff;
     }
 
     default int length() {
-        return data().length;
+        return this.data().length;
     }
 
-    static byte[] convert(int... data) {
+    static byte[] convert(final int... data) {
         final byte[] bytes = new byte[data.length];
         bytes[0] = (byte) (data[0] * 8);
         for (int i = 1; i < data.length; i++) {

@@ -18,13 +18,13 @@ public enum VideoQuality {
 
     private final Integer order;
 
-    VideoQuality(int order) {
+    VideoQuality(final int order) {
         this.order = order;
     }
 
-    public int compare(VideoQuality quality) {
+    public int compare(final VideoQuality quality) {
         if (this == quality) return 0;
-        return order.compareTo(quality.order);
+        return this.order.compareTo(quality.order);
     }
 
 }

@@ -9,16 +9,16 @@ public class RequestVideoStreamDownload extends Request<RequestVideoStreamDownlo
     private final Format format;
     private final OutputStream outputStream;
 
-    public RequestVideoStreamDownload(Format format, OutputStream outputStream) {
+    public RequestVideoStreamDownload(final Format format, final OutputStream outputStream) {
         this.format = format;
         this.outputStream = outputStream;
     }
 
     public Format getFormat() {
-        return format;
+        return this.format;
     }
 
     public OutputStream getOutputStream() {
-        return outputStream;
+        return this.outputStream;
     }
 }

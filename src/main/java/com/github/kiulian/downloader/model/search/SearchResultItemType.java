@@ -4,5 +4,5 @@ public enum SearchResultItemType {
     VIDEO,
     CHANNEL,
     PLAYLIST,
-    SHELF;
+    SHELF
 }

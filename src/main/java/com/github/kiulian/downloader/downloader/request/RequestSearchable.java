@@ -7,12 +7,12 @@ public class RequestSearchable extends Request<RequestSearchable, SearchResult> 
 
     private final String searchPath;
 
-    public RequestSearchable(Searchable searchable) {
+    public RequestSearchable(final Searchable searchable) {
         this.searchPath = searchable.searchPath();
     }
 
     public String searchPath() {
-        return searchPath;
+        return this.searchPath;
     }
 
 }

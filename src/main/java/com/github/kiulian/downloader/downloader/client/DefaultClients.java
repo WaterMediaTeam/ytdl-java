@@ -74,7 +74,7 @@ public enum DefaultClients implements Client {
     private final String body;
     private final String version;
 
-    public static void setDefaultClient(Client client) {
+    public static void setDefaultClient(final Client client) {
         DEFAULT = client;
     }
 
@@ -82,11 +82,11 @@ public enum DefaultClients implements Client {
         return DEFAULT;
     }
 
-    DefaultClients(String version, JSONObject body) {
+    DefaultClients(final String version, final JSONObject body) {
         this(version, body, new QueryParameter[0]);
     }
 
-    DefaultClients(String version, JSONObject body, QueryParameter... parameters) {
+    DefaultClients(final String version, final JSONObject body, final QueryParameter... parameters) {
         this.version = version;
 
         final JSONObject client = body.getJSONObject("context").getJSONObject("client");
@@ -94,7 +94,7 @@ public enum DefaultClients implements Client {
         client.fluentPut("clientVersion", version);
         JSONObject cur = body;
         for (final QueryParameter param: parameters) {
-            for (String p: param.path) {
+            for (final String p: param.path) {
                 cur = cur.getJSONObject(p);
             }
             cur.fluentPut(param.key, param.value);

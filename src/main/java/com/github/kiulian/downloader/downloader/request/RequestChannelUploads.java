@@ -6,12 +6,12 @@ public class RequestChannelUploads extends Request<RequestPlaylistInfo, Playlist
 
     private final String channelId;
 
-    public RequestChannelUploads(String channelId) {
+    public RequestChannelUploads(final String channelId) {
         this.channelId = channelId;
     }
 
     public String getChannelId() {
-        return channelId;
+        return this.channelId;
     }
 
 }

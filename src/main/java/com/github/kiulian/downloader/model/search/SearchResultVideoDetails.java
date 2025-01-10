@@ -21,55 +21,55 @@ public class SearchResultVideoDetails extends AbstractListVideoDetails implement
     // Animated images
     private List<String> richThumbnails;
 
-    public SearchResultVideoDetails(JSONObject json, boolean isMovie) {
+    public SearchResultVideoDetails(final JSONObject json, final boolean isMovie) {
         super(json);
         this.isMovie = isMovie;
         if (json.containsKey("lengthText")) {
-            String lengthText = json.getJSONObject("lengthText").getString("simpleText");
-            lengthSeconds = Utils.parseLengthSeconds(lengthText);
+            final String lengthText = json.getJSONObject("lengthText").getString("simpleText");
+            this.lengthSeconds = Utils.parseLengthSeconds(lengthText);
         }
         if (isMovie) {
-            description = Utils.parseRuns(json.getJSONObject("descriptionSnippet"));
+            this.description = Utils.parseRuns(json.getJSONObject("descriptionSnippet"));
         } else if (json.containsKey("detailedMetadataSnippets")) {
-            description = Utils.parseRuns(json.getJSONArray("detailedMetadataSnippets")
+            this.description = Utils.parseRuns(json.getJSONArray("detailedMetadataSnippets")
                     .getJSONObject(0)
                     .getJSONObject("snippetText"));
         }
         if (json.containsKey("upcomingEventData")) {
-            String startTimeText = json.getJSONObject("upcomingEventData").getString("startTime");
-            startTime = Long.parseLong(startTimeText);
-            viewCount = -1;
+            final String startTimeText = json.getJSONObject("upcomingEventData").getString("startTime");
+            this.startTime = Long.parseLong(startTimeText);
+            this.viewCount = -1;
         } else if (json.containsKey("viewCountText")) {
-            JSONObject jsonCount = json.getJSONObject("viewCountText");
+            final JSONObject jsonCount = json.getJSONObject("viewCountText");
             if (jsonCount.containsKey("simpleText")) {
-                viewCountText = jsonCount.getString("simpleText");
-                viewCount = Utils.parseViewCount(viewCountText);
+                this.viewCountText = jsonCount.getString("simpleText");
+                this.viewCount = Utils.parseViewCount(this.viewCountText);
             } else if (jsonCount.containsKey("runs")) {
-                viewCountText = Utils.parseRuns(jsonCount);
-                viewCount = -1;
+                this.viewCountText = Utils.parseRuns(jsonCount);
+                this.viewCount = -1;
             }
         }
         if (json.containsKey("badges")) {
-            JSONArray jsonBadges = json.getJSONArray("badges");
-            badges = new ArrayList<>(jsonBadges.size());
+            final JSONArray jsonBadges = json.getJSONArray("badges");
+            this.badges = new ArrayList<>(jsonBadges.size());
             for (int i = 0; i < jsonBadges.size(); i++) {
-                JSONObject jsonBadge = jsonBadges.getJSONObject(i);
+                final JSONObject jsonBadge = jsonBadges.getJSONObject(i);
                 if (jsonBadge.containsKey("metadataBadgeRenderer")) {
-                    badges.add(jsonBadge.getJSONObject("metadataBadgeRenderer").getString("label"));
+                    this.badges.add(jsonBadge.getJSONObject("metadataBadgeRenderer").getString("label"));
                 }
             }
         }
         if (json.containsKey("richThumbnail")) {
             try {
-                JSONArray jsonThumbs = json.getJSONObject("richThumbnail")
+                final JSONArray jsonThumbs = json.getJSONObject("richThumbnail")
                         .getJSONObject("movingThumbnailRenderer")
                         .getJSONObject("movingThumbnailDetails")
                         .getJSONArray("thumbnails");
-                richThumbnails = new ArrayList<>(jsonThumbs.size());
+                this.richThumbnails = new ArrayList<>(jsonThumbs.size());
                 for (int i = 0; i < jsonThumbs.size(); i++) {
-                    richThumbnails.add(jsonThumbs.getJSONObject(i).getString("url"));
+                    this.richThumbnails.add(jsonThumbs.getJSONObject(i).getString("url"));
                 }
-            } catch (NullPointerException ignored) {}
+            } catch (final NullPointerException ignored) {}
         }
     }
 
@@ -84,34 +84,34 @@ public class SearchResultVideoDetails extends AbstractListVideoDetails implement
     }
 
     public boolean isMovie() {
-        return isMovie;
+        return this.isMovie;
     }
 
     public boolean isLive() {
-        return viewCount == -1;
+        return this.viewCount == -1;
     }
 
     public String viewCountText() {
-        return viewCountText;
+        return this.viewCountText;
     }
 
     public long viewCount() {
-        return viewCount;
+        return this.viewCount;
     }
 
     public long startTime() {
-        return startTime;
+        return this.startTime;
     }
 
     public List<String> badges() {
-        return badges;
+        return this.badges;
     }
 
     public List<String> richThumbnails() {
-        return richThumbnails;
+        return this.richThumbnails;
     }
 
     public String description() {
-        return description;
+        return this.description;
     }
 }

@@ -19,30 +19,30 @@ public class VideoInfo {
     private final List<Format> formats;
     private final List<SubtitlesInfo> subtitlesInfo;
 
-    public VideoInfo(VideoDetails videoDetails, List<Format> formats, List<SubtitlesInfo> subtitlesInfo) {
+    public VideoInfo(final VideoDetails videoDetails, final List<Format> formats, final List<SubtitlesInfo> subtitlesInfo) {
         this.videoDetails = videoDetails;
         this.formats = formats;
         this.subtitlesInfo = subtitlesInfo;
     }
 
     public VideoDetails details() {
-        return videoDetails;
+        return this.videoDetails;
     }
 
     public List<Format> formats() {
-        return formats;
+        return this.formats;
     }
 
     public List<SubtitlesInfo> subtitlesInfo() {
-        return subtitlesInfo;
+        return this.subtitlesInfo;
     }
 
-    public List<Format> findFormats(Filter<Format> filter) {
-        return filter.select(formats);
+    public List<Format> findFormats(final Filter<Format> filter) {
+        return filter.select(this.formats);
     }
 
-    public Format findFormatByItag(int itag) {
-        for (Format format : formats) {
+    public Format findFormatByItag(final int itag) {
+        for (final Format format : this.formats) {
             if (format.itag().id() == itag)
                 return format;
         }
@@ -50,9 +50,9 @@ public class VideoInfo {
     }
 
     public List<VideoWithAudioFormat> videoWithAudioFormats() {
-        List<VideoWithAudioFormat> find = new LinkedList<>();
+        final List<VideoWithAudioFormat> find = new LinkedList<>();
 
-        for (Format format : formats) {
+        for (final Format format : this.formats) {
             if (format instanceof VideoWithAudioFormat) {
                 find.add((VideoWithAudioFormat) format);
             }
@@ -62,11 +62,11 @@ public class VideoInfo {
 
     public VideoFormat bestVideoWithAudioFormat() {
         VideoFormat bestFormat = null;
-        for (Format format : formats) {
+        for (final Format format : this.formats) {
             if (!(format instanceof VideoWithAudioFormat)) {
                 continue;
             }
-            VideoFormat videoFormat = (VideoFormat) format;
+            final VideoFormat videoFormat = (VideoFormat) format;
             if (bestFormat == null || videoFormat.videoQuality().compare(bestFormat.videoQuality()) > 0) {
                 bestFormat = videoFormat;
             }
@@ -75,9 +75,9 @@ public class VideoInfo {
     }
 
     public List<VideoFormat> videoFormats() {
-        List<VideoFormat> find = new LinkedList<>();
+        final List<VideoFormat> find = new LinkedList<>();
 
-        for (Format format : formats) {
+        for (final Format format : this.formats) {
             if (format instanceof VideoFormat) {
                 find.add((VideoFormat) format);
             }
@@ -87,11 +87,11 @@ public class VideoInfo {
 
     public VideoFormat bestVideoFormat() {
         VideoFormat bestFormat = null;
-        for (Format format : formats) {
+        for (final Format format : this.formats) {
             if (!(format instanceof VideoFormat)) {
                 continue;
             }
-            VideoFormat videoFormat = (VideoFormat) format;
+            final VideoFormat videoFormat = (VideoFormat) format;
             if (bestFormat == null || videoFormat.videoQuality().compare(bestFormat.videoQuality()) > 0) {
                 bestFormat = videoFormat;
             }
@@ -100,9 +100,9 @@ public class VideoInfo {
     }
 
     public List<AudioFormat> audioFormats() {
-        List<AudioFormat> find = new LinkedList<>();
+        final List<AudioFormat> find = new LinkedList<>();
 
-        for (Format format : formats) {
+        for (final Format format : this.formats) {
             if (!(format instanceof AudioFormat)) {
                 continue;
             }
@@ -113,11 +113,11 @@ public class VideoInfo {
 
     public AudioFormat bestAudioFormat() {
         AudioFormat bestFormat = null;
-        for (Format format : formats) {
+        for (final Format format : this.formats) {
             if (!(format instanceof AudioFormat)) {
                 continue;
             }
-            AudioFormat audioFormat = (AudioFormat) format;
+            final AudioFormat audioFormat = (AudioFormat) format;
             if (bestFormat == null || audioFormat.audioQuality().compare(bestFormat.audioQuality()) > 0) {
                 bestFormat = audioFormat;
             }

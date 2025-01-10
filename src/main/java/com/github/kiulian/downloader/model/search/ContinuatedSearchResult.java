@@ -9,8 +9,8 @@ public class ContinuatedSearchResult extends SearchResult {
 
     private final SearchContinuation continuation;
 
-    public ContinuatedSearchResult(long estimatedResults, List<SearchResultItem> items,
-            Map<QueryElementType, QueryElement> queryElements, SearchContinuation continuation) {
+    public ContinuatedSearchResult(final long estimatedResults, final List<SearchResultItem> items,
+                                   final Map<QueryElementType, QueryElement> queryElements, final SearchContinuation continuation) {
         super(estimatedResults, items, queryElements);
         this.continuation = continuation;
     }
@@ -20,6 +20,6 @@ public class ContinuatedSearchResult extends SearchResult {
     }
 
     public SearchContinuation continuation() {
-        return continuation;
+        return this.continuation;
     }
 }

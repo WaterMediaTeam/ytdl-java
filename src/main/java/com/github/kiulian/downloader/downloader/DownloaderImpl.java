@@ -22,57 +22,57 @@ public class DownloaderImpl implements Downloader {
 
     private final Config config;
 
-    public DownloaderImpl(Config config) {
+    public DownloaderImpl(final Config config) {
         this.config = config;
     }
 
     @Override
-    public ResponseImpl<String> downloadWebpage(RequestWebpage request) {
+    public ResponseImpl<String> downloadWebpage(final RequestWebpage request) {
         if (request.isAsync()) {
-            ExecutorService executorService = config.getExecutorService();
-            Future<String> result = executorService.submit(() -> download(request));
+            final ExecutorService executorService = this.config.getExecutorService();
+            final Future<String> result = executorService.submit(() -> this.download(request));
             return ResponseImpl.fromFuture(result);
         }
         try {
-            String result = download(request);
+            final String result = this.download(request);
             return ResponseImpl.from(result);
-        } catch (IOException | YoutubeException e) {
+        } catch (final IOException | YoutubeException e) {
             return ResponseImpl.error(e);
         }
     }
 
-    private String download(RequestWebpage request) throws IOException, YoutubeException {
-        String downloadUrl = request.getDownloadUrl();
-        Map<String, String> headers = request.getHeaders();
-        YoutubeCallback<String> callback = request.getCallback();
-        int maxRetries = request.getRetries() != 0 ? request.getRetries() : config.getRetries();
-        Proxy proxy = request.getProxy();
+    private String download(final RequestWebpage request) throws IOException, YoutubeException {
+        final String downloadUrl = request.getDownloadUrl();
+        final Map<String, String> headers = request.getHeaders();
+        final YoutubeCallback<String> callback = request.getCallback();
+        int maxRetries = request.getRetries() != 0 ? request.getRetries() : this.config.getRetries();
+        final Proxy proxy = request.getProxy();
 
         IOException exception;
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
         do {
             try {
-                HttpURLConnection urlConnection = openConnection(downloadUrl, headers, proxy, config.isCompressionEnabled());
+                final HttpURLConnection urlConnection = this.openConnection(downloadUrl, headers, proxy, this.config.isCompressionEnabled());
                 urlConnection.setRequestMethod(request.getMethod());
                 if (request.getBody() != null) {
                     urlConnection.setDoOutput(true);
-                    try (OutputStreamWriter outputWriter = new OutputStreamWriter(urlConnection.getOutputStream(), StandardCharsets.UTF_8)){
+                    try (final OutputStreamWriter outputWriter = new OutputStreamWriter(urlConnection.getOutputStream(), StandardCharsets.UTF_8)){
                         outputWriter.write(request.getBody());
                         outputWriter.flush();
                     }
                 }
-                int responseCode = urlConnection.getResponseCode();
+                final int responseCode = urlConnection.getResponseCode();
                 if (responseCode != 200) {
-                    YoutubeException.DownloadException e = new YoutubeException.DownloadException("Failed to download: HTTP " + responseCode);
+                    final YoutubeException.DownloadException e = new YoutubeException.DownloadException("Failed to download: HTTP " + responseCode);
                     if (callback != null) {
                         callback.onError(e);
                     }
                     throw e;
                 }
 
-                int contentLength = urlConnection.getContentLength();
+                final int contentLength = urlConnection.getContentLength();
                 if (contentLength == 0) {
-                    YoutubeException.DownloadException e = new YoutubeException.DownloadException("Failed to download: Response is empty");
+                    final YoutubeException.DownloadException e = new YoutubeException.DownloadException("Failed to download: Response is empty");
                     if (callback != null) {
                         callback.onError(e);
                     }
@@ -82,7 +82,7 @@ public class DownloaderImpl implements Downloader {
                 BufferedReader br = null;
                 try {
                     InputStream in = urlConnection.getInputStream();
-                    if (config.isCompressionEnabled() && "gzip".equals(urlConnection.getHeaderField("content-encoding"))) {
+                    if (this.config.isCompressionEnabled() && "gzip".equals(urlConnection.getHeaderField("content-encoding"))) {
                         in = new GZIPInputStream(in);
                     }
                     br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -94,7 +94,7 @@ public class DownloaderImpl implements Downloader {
                 }
                 // reset error in case of successful retry
                 exception = null;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 exception = e;
             }
         } while (exception != null && maxRetries-- > 0);
@@ -106,7 +106,7 @@ public class DownloaderImpl implements Downloader {
             throw exception;
         }
 
-        String resultString = result.toString();
+        final String resultString = result.toString();
         if (callback != null) {
             callback.onFinished(resultString);
         }
@@ -114,77 +114,77 @@ public class DownloaderImpl implements Downloader {
     }
 
     @Override
-    public ResponseImpl<File> downloadVideoAsFile(RequestVideoFileDownload request) {
+    public ResponseImpl<File> downloadVideoAsFile(final RequestVideoFileDownload request) {
         if (request.isAsync()) {
-            ExecutorService executorService = config.getExecutorService();
-            Future<File> result = executorService.submit(() -> download(request));
+            final ExecutorService executorService = this.config.getExecutorService();
+            final Future<File> result = executorService.submit(() -> this.download(request));
             return ResponseImpl.fromFuture(result);
         }
         try {
-            File result = download(request);
+            final File result = this.download(request);
             return ResponseImpl.from(result);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return ResponseImpl.error(e);
         }
     }
 
     @Override
-    public ResponseImpl<Void> downloadVideoAsStream(RequestVideoStreamDownload request) {
+    public ResponseImpl<Void> downloadVideoAsStream(final RequestVideoStreamDownload request) {
         if (request.isAsync()) {
-            ExecutorService executorService = config.getExecutorService();
-            Future<Void> result = executorService.submit(() -> download(request));
+            final ExecutorService executorService = this.config.getExecutorService();
+            final Future<Void> result = executorService.submit(() -> this.download(request));
             return ResponseImpl.fromFuture(result);
         }
         try {
-            download(request);
+            this.download(request);
             return ResponseImpl.from(null);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return ResponseImpl.error(e);
         }
     }
 
-    private File download(RequestVideoFileDownload request) throws IOException {
-        Format format = request.getFormat();
-        File outputFile = request.getOutputFile();
-        YoutubeCallback<File> callback = request.getCallback();
-        OutputStream os = new FileOutputStream(outputFile);
+    private File download(final RequestVideoFileDownload request) throws IOException {
+        final Format format = request.getFormat();
+        final File outputFile = request.getOutputFile();
+        final YoutubeCallback<File> callback = request.getCallback();
+        final OutputStream os = new FileOutputStream(outputFile);
 
-        download(request, format, os);
+        this.download(request, format, os);
         if (callback != null) {
             callback.onFinished(outputFile);
         }
         return outputFile;
     }
 
-    private Void download(RequestVideoStreamDownload request) throws IOException {
-        Format format = request.getFormat();
-        YoutubeCallback<Void> callback = request.getCallback();
-        OutputStream os = request.getOutputStream();
+    private Void download(final RequestVideoStreamDownload request) throws IOException {
+        final Format format = request.getFormat();
+        final YoutubeCallback<Void> callback = request.getCallback();
+        final OutputStream os = request.getOutputStream();
 
-        download(request, format, os);
+        this.download(request, format, os);
         if (callback != null) {
             callback.onFinished(null);
         }
         return null;
     }
 
-    private void download(Request<?, ?> request, Format format, OutputStream os) throws IOException {
-        Map<String, String> headers = request.getHeaders();
-        YoutubeCallback<?> callback = request.getCallback();
-        int retries = request.getRetries() != 0 ? request.getRetries() : config.getRetries();
-        Proxy proxy = request.getProxy();
+    private void download(final Request<?, ?> request, final Format format, final OutputStream os) throws IOException {
+        final Map<String, String> headers = request.getHeaders();
+        final YoutubeCallback<?> callback = request.getCallback();
+        final int retries = request.getRetries() != 0 ? request.getRetries() : this.config.getRetries();
+        final Proxy proxy = request.getProxy();
 
         IOException exception;
         do {
             try {
                 if (format.isAdaptive() && format.contentLength() != null) {
-                    downloadByPart(format, os, headers, proxy, callback);
+                    this.downloadByPart(format, os, headers, proxy, callback);
                 } else {
-                    downloadStraight(format, os, headers, proxy, callback);
+                    this.downloadStraight(format, os, headers, proxy, callback);
                 }
                 // reset error in case of successful retry
                 exception = null;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 exception = e;
             } finally {
                 closeSilently(os);
@@ -200,16 +200,16 @@ public class DownloaderImpl implements Downloader {
     }
 
     // Downloads the format in one single request
-    private void downloadStraight(Format format, OutputStream os, Map<String, String> headers, Proxy proxy, YoutubeCallback<?> callback) throws IOException {
-        HttpURLConnection urlConnection = openConnection(format.url(), headers, proxy, false);
-        int responseCode = urlConnection.getResponseCode();
+    private void downloadStraight(final Format format, final OutputStream os, final Map<String, String> headers, final Proxy proxy, final YoutubeCallback<?> callback) throws IOException {
+        final HttpURLConnection urlConnection = this.openConnection(format.url(), headers, proxy, false);
+        final int responseCode = urlConnection.getResponseCode();
         if (responseCode != 200) {
             throw new RuntimeException("Failed to download: HTTP " + responseCode);
         }
-        int contentLength = urlConnection.getContentLength();
-        InputStream is = urlConnection.getInputStream();
+        final int contentLength = urlConnection.getContentLength();
+        final InputStream is = urlConnection.getInputStream();
 
-        byte[] buffer = new byte[BUFFER_SIZE];
+        final byte[] buffer = new byte[BUFFER_SIZE];
         if (callback == null) {
             copyAndCloseInput(is, os, buffer);
         } else {
@@ -218,13 +218,13 @@ public class DownloaderImpl implements Downloader {
     }
 
     // Downloads the format part by part, with as many requests as needed
-    private void downloadByPart(Format format, OutputStream os, Map<String, String> headers, Proxy proxy, YoutubeCallback<?> listener) throws IOException {
+    private void downloadByPart(final Format format, final OutputStream os, final Map<String, String> headers, final Proxy proxy, final YoutubeCallback<?> listener) throws IOException {
         long done = 0;
         int partNumber = 0;
 
         final String pathPrefix = "&cver=" + format.clientVersion() + "&range=";
         final long contentLength = format.contentLength();
-        byte[] buffer = new byte[BUFFER_SIZE];
+        final byte[] buffer = new byte[BUFFER_SIZE];
 
         while (done < contentLength) {
             long toRead = PART_LENGTH;
@@ -233,17 +233,17 @@ public class DownloaderImpl implements Downloader {
             }
 
             partNumber++;
-            String partUrl = format.url() + pathPrefix
+            final String partUrl = format.url() + pathPrefix
                     + done + "-" + (done + toRead - 1)    // range first-last byte positions
                     + "&rn=" + partNumber;                // part number
 
-            HttpURLConnection urlConnection = openConnection(partUrl, headers, proxy, false);
-            int responseCode = urlConnection.getResponseCode();
+            final HttpURLConnection urlConnection = this.openConnection(partUrl, headers, proxy, false);
+            final int responseCode = urlConnection.getResponseCode();
             if (responseCode != 200) {
                 throw new RuntimeException("Failed to download: HTTP " + responseCode);
             }
 
-            InputStream is = urlConnection.getInputStream();
+            final InputStream is = urlConnection.getInputStream();
             if (listener == null) {
                 done += copyAndCloseInput(is, os, buffer);
             } else {
@@ -253,7 +253,7 @@ public class DownloaderImpl implements Downloader {
     }
 
     // Copies as many bytes as possible then closes input stream
-    private static long copyAndCloseInput(InputStream is, OutputStream os, byte[] buffer, long offset, long totalLength, final YoutubeCallback<?> listener) throws IOException {
+    private static long copyAndCloseInput(final InputStream is, final OutputStream os, final byte[] buffer, final long offset, final long totalLength, final YoutubeCallback<?> listener) throws IOException {
         long done = 0;
 
         try {
@@ -266,7 +266,7 @@ public class DownloaderImpl implements Downloader {
                 }
                 os.write(buffer, 0, read);
                 done += read;
-                long progress = ((offset + done) * 100) / totalLength;
+                final long progress = ((offset + done) * 100) / totalLength;
                 if (progress > lastProgress) {
                     if (listener instanceof YoutubeProgressCallback) {
                         ((YoutubeProgressCallback<?>) listener).onDownloading((int) progress);
@@ -280,7 +280,7 @@ public class DownloaderImpl implements Downloader {
         return done;
     }
 
-    private static long copyAndCloseInput(InputStream is, OutputStream os, byte[] buffer) throws IOException {
+    private static long copyAndCloseInput(final InputStream is, final OutputStream os, final byte[] buffer) throws IOException {
         long done = 0;
 
         try {
@@ -299,25 +299,25 @@ public class DownloaderImpl implements Downloader {
     }
 
 
-    private HttpURLConnection openConnection(String httpUrl, Map<String, String> headers, Proxy proxy, boolean acceptCompression) throws IOException {
-        URL url = new URL(httpUrl);
+    private HttpURLConnection openConnection(final String httpUrl, final Map<String, String> headers, final Proxy proxy, final boolean acceptCompression) throws IOException {
+        final URL url = new URL(httpUrl);
 
-        HttpURLConnection urlConnection;
+        final HttpURLConnection urlConnection;
         if (proxy != null) {
             urlConnection = (HttpURLConnection) url.openConnection(proxy);
-        } else if (config.getProxy() != null) {
-            urlConnection = (HttpURLConnection) url.openConnection(config.getProxy());
+        } else if (this.config.getProxy() != null) {
+            urlConnection = (HttpURLConnection) url.openConnection(this.config.getProxy());
         } else {
             urlConnection = (HttpURLConnection) url.openConnection();
         }
-        for (Map.Entry<String, String> entry : config.getHeaders().entrySet()) {
+        for (final Map.Entry<String, String> entry : this.config.getHeaders().entrySet()) {
             urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
         }
         if (acceptCompression) {
             urlConnection.setRequestProperty("Accept-Encoding", "gzip");
         }
         if (headers != null) {
-            for (Map.Entry<String, String> entry : headers.entrySet()) {
+            for (final Map.Entry<String, String> entry : headers.entrySet()) {
                 urlConnection.setRequestProperty(entry.getKey(), entry.getValue());
             }
         }

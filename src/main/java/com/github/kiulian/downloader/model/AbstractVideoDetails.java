@@ -17,41 +17,41 @@ public abstract class AbstractVideoDetails {
     protected boolean isLive;
 
     protected boolean isDownloadable() {
-        return (!isLive() && lengthSeconds() != 0);
+        return (!this.isLive() && this.lengthSeconds() != 0);
     }
 
     public AbstractVideoDetails() {
     }
 
-    public AbstractVideoDetails(JSONObject json) {
-        videoId = json.getString("videoId");
+    public AbstractVideoDetails(final JSONObject json) {
+        this.videoId = json.getString("videoId");
         if (json.containsKey("lengthSeconds")) {
-            lengthSeconds = json.getIntValue("lengthSeconds");
+            this.lengthSeconds = json.getIntValue("lengthSeconds");
         }
-        thumbnails = Utils.parseThumbnails(json.getJSONObject("thumbnail"));
+        this.thumbnails = Utils.parseThumbnails(json.getJSONObject("thumbnail"));
     }
 
     public String videoId() {
-        return videoId;
+        return this.videoId;
     }
 
     public String title() {
-        return title;
+        return this.title;
     }
 
     public int lengthSeconds() {
-        return lengthSeconds;
+        return this.lengthSeconds;
     }
 
     public List<String> thumbnails() {
-        return thumbnails;
+        return this.thumbnails;
     }
 
     public String author() {
-        return author;
+        return this.author;
     }
 
     public boolean isLive() {
-        return isLive;
+        return this.isLive;
     }
 }

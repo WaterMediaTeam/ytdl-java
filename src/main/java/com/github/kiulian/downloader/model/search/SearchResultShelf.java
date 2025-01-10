@@ -11,19 +11,19 @@ public class SearchResultShelf implements SearchResultItem {
     private final String title;
     private final List<SearchResultVideoDetails> videos;
 
-    public SearchResultShelf(JSONObject json) {
-        title = json.getJSONObject("title").getString("simpleText");
-        JSONObject jsonContent = json.getJSONObject("content");
+    public SearchResultShelf(final JSONObject json) {
+        this.title = json.getJSONObject("title").getString("simpleText");
+        final JSONObject jsonContent = json.getJSONObject("content");
         
         // verticalListRenderer / horizontalMovieListRenderer
-        String contentRendererKey = jsonContent.keySet().iterator().next();
-        boolean isMovieShelf = contentRendererKey.contains("Movie");
-        JSONArray jsonItems = jsonContent.getJSONObject(contentRendererKey).getJSONArray("items");
-        videos = new ArrayList<>(jsonItems.size());
+        final String contentRendererKey = jsonContent.keySet().iterator().next();
+        final boolean isMovieShelf = contentRendererKey.contains("Movie");
+        final JSONArray jsonItems = jsonContent.getJSONObject(contentRendererKey).getJSONArray("items");
+        this.videos = new ArrayList<>(jsonItems.size());
         for (int i = 0; i < jsonItems.size(); i++) {
-            JSONObject jsonItem = jsonItems.getJSONObject(i);
-            String itemRendererKey = jsonItem.keySet().iterator().next();
-            videos.add(new SearchResultVideoDetails(jsonItem.getJSONObject(itemRendererKey), isMovieShelf));
+            final JSONObject jsonItem = jsonItems.getJSONObject(i);
+            final String itemRendererKey = jsonItem.keySet().iterator().next();
+            this.videos.add(new SearchResultVideoDetails(jsonItem.getJSONObject(itemRendererKey), isMovieShelf));
         }
     }
 
@@ -39,11 +39,11 @@ public class SearchResultShelf implements SearchResultItem {
 
     @Override
     public String title() {
-        return title;
+        return this.title;
     }
 
     public List<SearchResultVideoDetails> videos() {
-        return videos;
+        return this.videos;
     }
 
 }

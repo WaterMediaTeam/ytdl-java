@@ -37,64 +37,64 @@ public class CachedCipherFactory implements CipherFactory {
             Pattern.compile("\\w+\\[(\\\"\\w+\\\")\\]\\(\\w,(\\d+)\\)")
     };
 
-    private Downloader downloader;
+    private final Downloader downloader;
 
-    private List<Pattern> knownInitialFunctionPatterns = new ArrayList<>();
-    private Map<Pattern, CipherFunction> functionsEquivalentMap = new HashMap<>();
-    private Map<String, Cipher> ciphers = new HashMap<>();
+    private final List<Pattern> knownInitialFunctionPatterns = new ArrayList<>();
+    private final Map<Pattern, CipherFunction> functionsEquivalentMap = new HashMap<>();
+    private final Map<String, Cipher> ciphers = new HashMap<>();
 
-    public CachedCipherFactory(Downloader downloader) {
+    public CachedCipherFactory(final Downloader downloader) {
         this.downloader = downloader;
 
-        for (String pattern : INITIAL_FUNCTION_PATTERNS) {
-            addInitialFunctionPattern(knownInitialFunctionPatterns.size(), pattern);
+        for (final String pattern : INITIAL_FUNCTION_PATTERNS) {
+            this.addInitialFunctionPattern(this.knownInitialFunctionPatterns.size(), pattern);
         }
 
-        addFunctionEquivalent(FUNCTION_REVERSE_PATTERN, new ReverseFunction());
-        addFunctionEquivalent(FUNCTION_SPLICE_PATTERN, new SpliceFunction());
-        addFunctionEquivalent(FUNCTION_SWAP1_PATTERN, new SwapFunctionV1());
+        this.addFunctionEquivalent(FUNCTION_REVERSE_PATTERN, new ReverseFunction());
+        this.addFunctionEquivalent(FUNCTION_SPLICE_PATTERN, new SpliceFunction());
+        this.addFunctionEquivalent(FUNCTION_SWAP1_PATTERN, new SwapFunctionV1());
 
-        SwapFunctionV2 swapFunctionV2 = new SwapFunctionV2();
-        addFunctionEquivalent(FUNCTION_SWAP2_PATTERN, swapFunctionV2);
-        addFunctionEquivalent(FUNCTION_SWAP3_PATTERN, swapFunctionV2);
+        final SwapFunctionV2 swapFunctionV2 = new SwapFunctionV2();
+        this.addFunctionEquivalent(FUNCTION_SWAP2_PATTERN, swapFunctionV2);
+        this.addFunctionEquivalent(FUNCTION_SWAP3_PATTERN, swapFunctionV2);
     }
 
     @Override
-    public void addInitialFunctionPattern(int priority, String regex) {
-        knownInitialFunctionPatterns.add(priority, Pattern.compile(regex));
+    public void addInitialFunctionPattern(final int priority, final String regex) {
+        this.knownInitialFunctionPatterns.add(priority, Pattern.compile(regex));
     }
 
     @Override
-    public void addFunctionEquivalent(String regex, CipherFunction function) {
-        functionsEquivalentMap.put(Pattern.compile(regex), function);
+    public void addFunctionEquivalent(final String regex, final CipherFunction function) {
+        this.functionsEquivalentMap.put(Pattern.compile(regex), function);
     }
 
     @Override
-    public Cipher createCipher(String jsUrl) throws YoutubeException {
-        Cipher cipher = ciphers.get(jsUrl);
+    public Cipher createCipher(final String jsUrl) throws YoutubeException {
+        Cipher cipher = this.ciphers.get(jsUrl);
 
         if (cipher == null) {
-            Response<String> response = downloader.downloadWebpage(new RequestWebpage(jsUrl));
+            final Response<String> response = this.downloader.downloadWebpage(new RequestWebpage(jsUrl));
             if (!response.ok()) {
                 throw new YoutubeException.DownloadException(String.format("Could not load url: %s, exception: %s", jsUrl, response.error().getMessage()));
             }
-            String js = response.data();
+            final String js = response.data();
 
-            List<JsFunction> transformFunctions = getTransformFunctions(js);
-            String var = transformFunctions.get(0).getVar();
+            final List<JsFunction> transformFunctions = this.getTransformFunctions(js);
+            final String var = transformFunctions.get(0).getVar();
 
-            String[] transformObject = getTransformObject(var, js);
-            Map<String, CipherFunction> transformFunctionsMap = getTransformFunctionsMap(transformObject);
+            final String[] transformObject = this.getTransformObject(var, js);
+            final Map<String, CipherFunction> transformFunctionsMap = this.getTransformFunctionsMap(transformObject);
 
             cipher = new DefaultCipher(transformFunctions, transformFunctionsMap);
-            ciphers.put(jsUrl, cipher);
+            this.ciphers.put(jsUrl, cipher);
         }
 
         return cipher;
     }
 
     public void clearCache() {
-        ciphers.clear();
+        this.ciphers.clear();
     }
 
     /**
@@ -110,17 +110,17 @@ public class CachedCipherFactory implements CipherFactory {
      * @return list of transform functions for deciphering
      * @throws YoutubeException if list of functions could not be found
      */
-    private List<JsFunction> getTransformFunctions(String js) throws YoutubeException {
-        String name = getInitialFunctionName(js).replaceAll("[^$A-Za-z0-9_]", "");
+    private List<JsFunction> getTransformFunctions(final String js) throws YoutubeException {
+        final String name = this.getInitialFunctionName(js).replaceAll("[^$A-Za-z0-9_]", "");
 
-        Pattern pattern = Pattern.compile(Pattern.quote(name) + "=function\\(\\w\\)\\{[a-z=\\.\\(\\\"\\)]*;(.*);(?:.+)\\}");
+        final Pattern pattern = Pattern.compile(Pattern.quote(name) + "=function\\(\\w\\)\\{[a-z=\\.\\(\\\"\\)]*;(.*);(?:.+)\\}");
 
-        Matcher matcher = pattern.matcher(js);
+        final Matcher matcher = pattern.matcher(js);
         if (matcher.find()) {
-            String[] jsFunctions = matcher.group(1).split(";");
-            List<JsFunction> transformFunctions = new ArrayList<>(jsFunctions.length);
-            for (String jsFunction : jsFunctions) {
-                JsFunction parsedFunction = parseFunction(jsFunction);
+            final String[] jsFunctions = matcher.group(1).split(";");
+            final List<JsFunction> transformFunctions = new ArrayList<>(jsFunctions.length);
+            for (final String jsFunction : jsFunctions) {
+                final JsFunction parsedFunction = this.parseFunction(jsFunction);
                 transformFunctions.add(parsedFunction);
             }
             return transformFunctions;
@@ -141,12 +141,12 @@ public class CachedCipherFactory implements CipherFactory {
      * @return JsFunction object which represents JavaScript function call
      * @throws YoutubeException if could not parse JavaScript function call
      */
-    private JsFunction parseFunction(String jsFunction) throws YoutubeException {
-        for (Pattern jsFunctionPattern : JS_FUNCTION_PATTERNS) {
-            Matcher matcher = jsFunctionPattern.matcher(jsFunction);
+    private JsFunction parseFunction(final String jsFunction) throws YoutubeException {
+        for (final Pattern jsFunctionPattern : JS_FUNCTION_PATTERNS) {
+            final Matcher matcher = jsFunctionPattern.matcher(jsFunction);
 
             if (matcher.find()) {
-                String var;
+                final String var;
                 String[] split = jsFunction.split("\\."); // case: Mx.FH(a,21)
                 if (split.length > 1) {
                     var = split[0];
@@ -158,8 +158,8 @@ public class CachedCipherFactory implements CipherFactory {
                         continue;
                     }
                 }
-                String name = matcher.group(1);
-                String argument = matcher.group(2);
+                final String name = matcher.group(1);
+                final String argument = matcher.group(2);
                 return new JsFunction(var, name, argument);
             }
         }
@@ -174,9 +174,9 @@ public class CachedCipherFactory implements CipherFactory {
      * @return initial function name
      * @throws YoutubeException if none of known patterns matches
      */
-    private String getInitialFunctionName(String js) throws YoutubeException {
-        for (Pattern pattern : knownInitialFunctionPatterns) {
-            Matcher matcher = pattern.matcher(js);
+    private String getInitialFunctionName(final String js) throws YoutubeException {
+        for (final Pattern pattern : this.knownInitialFunctionPatterns) {
+            final Matcher matcher = pattern.matcher(js);
             if (matcher.find()) {
                 return matcher.group(1);
             }
@@ -202,11 +202,11 @@ public class CachedCipherFactory implements CipherFactory {
      * @return array of functions definitions for deciphering
      * @throws YoutubeException if "transform object" not found
      */
-    private String[] getTransformObject(String var, String js) throws YoutubeException {
+    private String[] getTransformObject(String var, final String js) throws YoutubeException {
         var = var.replaceAll("[^$A-Za-z0-9_]", "");
         var = Pattern.quote(var);
-        Pattern pattern = Pattern.compile(String.format("var %s=\\{(.*?)\\};", var), Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(js);
+        final Pattern pattern = Pattern.compile(String.format("var %s=\\{(.*?)\\};", var), Pattern.DOTALL);
+        final Matcher matcher = pattern.matcher(js);
         if (matcher.find()) {
             return matcher.group(1).replaceAll("\n", " ").split(", ");
         }
@@ -221,14 +221,14 @@ public class CachedCipherFactory implements CipherFactory {
      * @return map of JS functions to Java equivalents
      * @throws YoutubeException if map function not found
      */
-    private Map<String, CipherFunction> getTransformFunctionsMap(String[] transformObject) throws YoutubeException {
-        Map<String, CipherFunction> mapper = new HashMap<>();
-        for (String obj : transformObject) {
-            String[] split = obj.split(":", 2);
-            String name = split[0];
-            String jsFunction = split[1];
+    private Map<String, CipherFunction> getTransformFunctionsMap(final String[] transformObject) throws YoutubeException {
+        final Map<String, CipherFunction> mapper = new HashMap<>();
+        for (final String obj : transformObject) {
+            final String[] split = obj.split(":", 2);
+            final String name = split[0];
+            final String jsFunction = split[1];
 
-            CipherFunction function = mapFunction(jsFunction);
+            final CipherFunction function = this.mapFunction(jsFunction);
             mapper.put(name, function);
         }
         return mapper;
@@ -241,9 +241,9 @@ public class CachedCipherFactory implements CipherFactory {
      * @return Java equivalent for JavaScript transform function
      * @throws YoutubeException if map function not found
      */
-    private CipherFunction mapFunction(String jsFunction) throws YoutubeException {
-        for (Map.Entry<Pattern, CipherFunction> entry : functionsEquivalentMap.entrySet()) {
-            Matcher matcher = entry.getKey().matcher(jsFunction);
+    private CipherFunction mapFunction(final String jsFunction) throws YoutubeException {
+        for (final Map.Entry<Pattern, CipherFunction> entry : this.functionsEquivalentMap.entrySet()) {
+            final Matcher matcher = entry.getKey().matcher(jsFunction);
             if (matcher.find()) {
                 return entry.getValue();
             }

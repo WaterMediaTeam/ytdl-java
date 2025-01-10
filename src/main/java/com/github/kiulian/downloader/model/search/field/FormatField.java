@@ -11,12 +11,12 @@ public enum FormatField implements SearchField {
 
     private final byte[] data;
 
-    private FormatField(int... data) {
+    FormatField(final int... data) {
         this.data = SearchField.convert(data);
     }
 
     @Override
     public byte[] data() {
-        return data;
+        return this.data;
     }
 }

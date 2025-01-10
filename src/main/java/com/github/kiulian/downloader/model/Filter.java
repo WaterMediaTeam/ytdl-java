@@ -8,10 +8,10 @@ public interface Filter<T> {
 
     boolean test(T element);
 
-    default List<T> select(List<T> elements) {
-        List<T> filtered = new LinkedList<>();
-        for (T element : elements) {
-            if (test(element)) {
+    default List<T> select(final List<T> elements) {
+        final List<T> filtered = new LinkedList<>();
+        for (final T element : elements) {
+            if (this.test(element)) {
                 filtered.add(element);
             }
         }

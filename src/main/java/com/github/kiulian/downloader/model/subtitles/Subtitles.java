@@ -12,31 +12,31 @@ public class Subtitles {
     private Extension format;
     private String translationLanguage;
 
-    Subtitles(String url, boolean fromCaptions) {
+    Subtitles(final String url, final boolean fromCaptions) {
         this.url = url;
         this.fromCaptions = fromCaptions;
     }
 
-    public Subtitles formatTo(Extension extension) {
+    public Subtitles formatTo(final Extension extension) {
         this.format = extension;
         return this;
     }
 
-    public Subtitles translateTo(String language) {
+    public Subtitles translateTo(final String language) {
         // currently translation is supported only for subtitles from captions
-        if (fromCaptions) {
+        if (this.fromCaptions) {
             this.translationLanguage = language;
         }
         return this;
     }
 
     public String getDownloadUrl() {
-        String downloadUrl = url;
-        if (format != null && format.isSubtitle()) {
-            downloadUrl += "&fmt=" + format.value();
+        String downloadUrl = this.url;
+        if (this.format != null && this.format.isSubtitle()) {
+            downloadUrl += "&fmt=" + this.format.value();
         }
-        if (translationLanguage != null && !translationLanguage.isEmpty()) {
-            downloadUrl += "&tlang=" + translationLanguage;
+        if (this.translationLanguage != null && !this.translationLanguage.isEmpty()) {
+            downloadUrl += "&tlang=" + this.translationLanguage;
         }
         return downloadUrl;
     }

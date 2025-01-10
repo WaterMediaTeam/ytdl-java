@@ -9,11 +9,11 @@ public class RequestPlaylistInfo extends Request<RequestPlaylistInfo, PlaylistIn
 
     private final String playlistId;
 
-    public RequestPlaylistInfo(String playlistId) {
+    public RequestPlaylistInfo(final String playlistId) {
         this.playlistId = playlistId;
     }
 
     public String getPlaylistId() {
-        return playlistId;
+        return this.playlistId;
     }
 }

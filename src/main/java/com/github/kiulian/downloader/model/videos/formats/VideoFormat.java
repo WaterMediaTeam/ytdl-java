@@ -14,23 +14,23 @@ public class VideoFormat extends Format {
     private final Integer height;
     private final VideoQuality videoQuality;
 
-    public VideoFormat(JSONObject json, boolean isAdaptive, String clientVersion) {
+    public VideoFormat(final JSONObject json, final boolean isAdaptive, final String clientVersion) {
         super(json, isAdaptive, clientVersion);
-        fps = json.getInteger("fps");
-        qualityLabel = json.getString("qualityLabel");
+        this.fps = json.getInteger("fps");
+        this.qualityLabel = json.getString("qualityLabel");
         if (json.containsKey("size")) {
-            String[] split = json.getString("size").split("x");
-            width = Integer.parseInt(split[0]);
-            height = Integer.parseInt(split[1]);
+            final String[] split = json.getString("size").split("x");
+            this.width = Integer.parseInt(split[0]);
+            this.height = Integer.parseInt(split[1]);
         } else {
-            width = json.getInteger("width");
-            height = json.getInteger("height");
+            this.width = json.getInteger("width");
+            this.height = json.getInteger("height");
         }
         VideoQuality videoQuality = null;
         if (json.containsKey("quality")) {
             try {
                 videoQuality = VideoQuality.valueOf(json.getString("quality"));
-            } catch (IllegalArgumentException ignore) {
+            } catch (final IllegalArgumentException ignore) {
             }
         }
         this.videoQuality = videoQuality;
@@ -42,23 +42,23 @@ public class VideoFormat extends Format {
     }
 
     public int fps() {
-        return fps;
+        return this.fps;
     }
 
     public VideoQuality videoQuality() {
-        return videoQuality != null ? videoQuality : itag.videoQuality();
+        return this.videoQuality != null ? this.videoQuality : this.itag.videoQuality();
     }
 
     public String qualityLabel() {
-        return qualityLabel;
+        return this.qualityLabel;
     }
 
     public Integer width() {
-        return width;
+        return this.width;
     }
 
     public Integer height() {
-        return height;
+        return this.height;
     }
 
 }

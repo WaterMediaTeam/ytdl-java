@@ -6,21 +6,21 @@ public class SearchContinuation {
     private final String clientVersion;
     private final String clickTrackingParameters;
 
-    public SearchContinuation(String token, String clientVersion, String clickTrackingParameters) {
+    public SearchContinuation(final String token, final String clientVersion, final String clickTrackingParameters) {
         this.token = token;
         this.clientVersion = clientVersion;
         this.clickTrackingParameters = clickTrackingParameters;
     }
 
     public String token() {
-        return token;
+        return this.token;
     }
 
     public String clientVersion() {
-        return clientVersion;
+        return this.clientVersion;
     }
 
     public String clickTrackingParameters() {
-        return clickTrackingParameters;
+        return this.clickTrackingParameters;
     }
 }

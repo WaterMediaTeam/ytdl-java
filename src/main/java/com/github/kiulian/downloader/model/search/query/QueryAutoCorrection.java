@@ -7,8 +7,8 @@ public class QueryAutoCorrection implements QueryElement {
 
     private final String query;
 
-    public QueryAutoCorrection(JSONObject json) {
-        query = Utils.parseRuns(json.getJSONObject("correctedQuery"));
+    public QueryAutoCorrection(final JSONObject json) {
+        this.query = Utils.parseRuns(json.getJSONObject("correctedQuery"));
     }
 
     @Override
@@ -17,7 +17,7 @@ public class QueryAutoCorrection implements QueryElement {
     }
 
     public String query() {
-        return query;
+        return this.query;
     }
 
     @Override

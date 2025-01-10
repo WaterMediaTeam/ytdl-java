@@ -10,18 +10,18 @@ public abstract class Searchable {
     protected abstract String extractQuery(JSONObject json);
     protected abstract String extractSearchPath(JSONObject json);
 
-    public Searchable(JSONObject json) {
+    public Searchable(final JSONObject json) {
         super();
-        this.query = extractQuery(json);
-        this.searchPath = extractSearchPath(json);
+        this.query = this.extractQuery(json);
+        this.searchPath = this.extractSearchPath(json);
     }
 
     public String query() {
-        return query;
+        return this.query;
     }
 
     public String searchPath() {
-        return searchPath;
+        return this.searchPath;
     }
 
 }

@@ -6,31 +6,31 @@ import com.github.kiulian.downloader.model.AbstractListVideoDetails;
 public class PlaylistVideoDetails extends AbstractListVideoDetails {
 
     private int index;
-    private boolean isPlayable;
+    private final boolean isPlayable;
 
-    public PlaylistVideoDetails(JSONObject json) {
+    public PlaylistVideoDetails(final JSONObject json) {
         super(json);
-        if (!thumbnails().isEmpty()) {
+        if (!this.thumbnails().isEmpty()) {
             // Otherwise, contains "/hqdefault.jpg?"
-            isLive = thumbnails().get(0).contains("/hqdefault_live.jpg?");
+            this.isLive = this.thumbnails().get(0).contains("/hqdefault_live.jpg?");
         }
 
         if (json.containsKey("index")) {
-            index = json.getJSONObject("index").getIntValue("simpleText");
+            this.index = json.getJSONObject("index").getIntValue("simpleText");
         }
-        isPlayable = json.getBooleanValue("isPlayable");
+        this.isPlayable = json.getBooleanValue("isPlayable");
     }
 
     @Override
     protected boolean isDownloadable() {
-        return isPlayable && super.isDownloadable();
+        return this.isPlayable && super.isDownloadable();
     }
 
     public int index() {
-        return index;
+        return this.index;
     }
 
     public boolean isPlayable() {
-        return isPlayable;
+        return this.isPlayable;
     }
 }

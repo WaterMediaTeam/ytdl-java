@@ -6,7 +6,7 @@ public class RequestSearchContinuation extends Request<RequestSearchContinuation
 
     private final SearchContinuation continuation;
 
-    public RequestSearchContinuation(SearchResult result) {
+    public RequestSearchContinuation(final SearchResult result) {
         if (!result.hasContinuation()) {
             throw new IllegalArgumentException("Search result must have a continuation");
         }
@@ -14,6 +14,6 @@ public class RequestSearchContinuation extends Request<RequestSearchContinuation
     }
 
     public SearchContinuation continuation() {
-        return continuation;
+        return this.continuation;
     }
 }

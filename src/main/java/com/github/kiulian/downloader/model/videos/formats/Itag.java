@@ -8,7 +8,7 @@ public enum Itag {
 
     unknown {
         @Override
-        public void setId(int id) {
+        public void setId(final int id) {
             this.id = id;
         }
     },
@@ -158,51 +158,51 @@ public enum Itag {
     Itag() {
     }
 
-    Itag(VideoQuality videoQuality) {
+    Itag(final VideoQuality videoQuality) {
         this(videoQuality, AudioQuality.noAudio, false);
     }
 
-    Itag(AudioQuality audioQuality) {
+    Itag(final AudioQuality audioQuality) {
         this(VideoQuality.noVideo, audioQuality, false);
     }
 
-    Itag(VideoQuality videoQuality, AudioQuality audioQuality) {
+    Itag(final VideoQuality videoQuality, final AudioQuality audioQuality) {
         this(videoQuality, audioQuality, false);
     }
 
-    Itag(VideoQuality videoQuality, AudioQuality audioQuality, boolean isVRor3D) {
-        setId(Integer.parseInt(name().substring(1)));
+    Itag(final VideoQuality videoQuality, final AudioQuality audioQuality, final boolean isVRor3D) {
+        this.setId(Integer.parseInt(this.name().substring(1)));
         this.videoQuality = videoQuality;
         this.audioQuality = audioQuality;
         this.isVRor3D = isVRor3D;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
     public int id() {
-        return id;
+        return this.id;
     }
 
     public VideoQuality videoQuality() {
-        return videoQuality;
+        return this.videoQuality;
     }
 
     public AudioQuality audioQuality() {
-        return audioQuality;
+        return this.audioQuality;
     }
 
     public boolean isVideo() {
-        return this != unknown && videoQuality != VideoQuality.noVideo;
+        return this != unknown && this.videoQuality != VideoQuality.noVideo;
     }
 
     public boolean isAudio() {
-        return this != unknown && audioQuality != AudioQuality.noAudio;
+        return this != unknown && this.audioQuality != AudioQuality.noAudio;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(id);
+        return String.valueOf(this.id);
     }
 }

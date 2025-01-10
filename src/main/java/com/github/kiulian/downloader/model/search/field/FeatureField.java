@@ -10,12 +10,12 @@ public enum FeatureField implements SearchField {
 
     private final byte[] data;
 
-    private FeatureField(int... data) {
+    FeatureField(final int... data) {
         this.data = SearchField.convert(data);
     }
 
     @Override
     public byte[] data() {
-        return data;
+        return this.data;
     }
 }

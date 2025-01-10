@@ -15,42 +15,42 @@ public class RequestVideoFileDownload extends Request<RequestVideoFileDownload, 
 
     private final Format format;
 
-    public RequestVideoFileDownload(Format format) {
+    public RequestVideoFileDownload(final Format format) {
         this.format = format;
     }
 
-    public RequestVideoFileDownload saveTo(File directory) {
+    public RequestVideoFileDownload saveTo(final File directory) {
         this.outputDirectory = directory;
         return this;
     }
 
-    public RequestVideoFileDownload renameTo(String fileName) {
+    public RequestVideoFileDownload renameTo(final String fileName) {
         this.fileName = fileName;
         return this;
     }
 
-    public RequestVideoFileDownload overwriteIfExists(boolean overwrite) {
+    public RequestVideoFileDownload overwriteIfExists(final boolean overwrite) {
         this.overwrite = overwrite;
         return this;
     }
 
     public File getOutputDirectory() {
-        return outputDirectory;
+        return this.outputDirectory;
     }
 
     public Format getFormat() {
-        return format;
+        return this.format;
     }
 
     public File getOutputFile() {
-        String originalName = removeIllegalChars(fileName);
-        String fileName = originalName + "." + format.extension().value();
-        File outputFile = new File(outputDirectory, fileName);
+        final String originalName = removeIllegalChars(this.fileName);
+        String fileName = originalName + "." + this.format.extension().value();
+        File outputFile = new File(this.outputDirectory, fileName);
 
-        if (!overwrite) {
+        if (!this.overwrite) {
             int i = 1;
             while (outputFile.exists()) {
-                fileName = originalName + "(" + i++ + ")" + "." + format.extension().value();
+                fileName = originalName + "(" + i++ + ")" + "." + this.format.extension().value();
                 outputFile = new File(outputFile.getParentFile(), fileName);
             }
         }

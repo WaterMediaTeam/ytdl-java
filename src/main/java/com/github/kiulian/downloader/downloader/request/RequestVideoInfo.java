@@ -6,11 +6,11 @@ public class RequestVideoInfo extends Request<RequestVideoInfo, VideoInfo> {
 
     private final String videoId;
 
-    public RequestVideoInfo(String videoId) {
+    public RequestVideoInfo(final String videoId) {
         this.videoId = videoId;
     }
 
     public String getVideoId() {
-        return videoId;
+        return this.videoId;
     }
 }

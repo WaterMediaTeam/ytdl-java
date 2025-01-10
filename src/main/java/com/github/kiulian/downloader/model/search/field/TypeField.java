@@ -8,12 +8,12 @@ public enum TypeField implements SearchField {
 
     private final byte[] data;
 
-    private TypeField(int... data) {
+    TypeField(final int... data) {
         this.data = SearchField.convert(data);
     }
 
     @Override
     public byte[] data() {
-        return data;
+        return this.data;
     }
 }

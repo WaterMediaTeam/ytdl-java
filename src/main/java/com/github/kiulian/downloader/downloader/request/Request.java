@@ -19,12 +19,12 @@ public abstract class Request<T extends Request<T, S>, S> {
     private Proxy proxy;
     private Client client = DefaultClients.defaultClient();
 
-    public T proxy(String host, int port) {
+    public T proxy(final String host, final int port) {
         this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
         return (T) this;
     }
 
-    public T proxy(String host, int port, String userName, String password) {
+    public T proxy(final String host, final int port, final String userName, final String password) {
         if (ProxyAuthenticator.getDefault() == null) {
             ProxyAuthenticator.setDefault(new ProxyAuthenticator(new ProxyCredentialsImpl()));
         }
@@ -34,28 +34,28 @@ public abstract class Request<T extends Request<T, S>, S> {
     }
 
     public Proxy getProxy() {
-        return proxy;
+        return this.proxy;
     }
 
-    public T retries(int maxRetries) {
+    public T retries(final int maxRetries) {
         this.retries = maxRetries;
         return (T) this;
     }
 
     public int getRetries() {
-        return retries;
+        return this.retries;
     }
 
-    public T callback(YoutubeCallback<S> callback) {
+    public T callback(final YoutubeCallback<S> callback) {
         this.callback = callback;
         return (T) this;
     }
 
     public YoutubeCallback<S> getCallback() {
-        return callback;
+        return this.callback;
     }
 
-    public T header(String key, String value) {
+    public T header(final String key, final String value) {
         if (this.headers == null) {
             this.headers = new HashMap<>();
         }
@@ -64,7 +64,7 @@ public abstract class Request<T extends Request<T, S>, S> {
     }
 
     public Map<String, String> getHeaders() {
-        return headers;
+        return this.headers;
     }
 
     public T async() {
@@ -73,15 +73,15 @@ public abstract class Request<T extends Request<T, S>, S> {
     }
 
     public boolean isAsync() {
-        return async;
+        return this.async;
     }
 
-    public T client(Client client) {
+    public T client(final Client client) {
         this.client = client;
         return (T) this;
     }
 
     public Client getClient() {
-        return client;
+        return this.client;
     }
 }

@@ -13,16 +13,16 @@ public class Base64EncoderImpl implements Base64Encoder {
     };
 
     @Override
-    public String encodeToString(byte[] bytes) {
+    public String encodeToString(final byte[] bytes) {
         // complete 6bit chars (8bit bytes, 6bit chars)
         int charCount = (bytes.length * 8) / 6;
         
         // complete 6bit remaining chars (1 or 2)
         // same as remaining bytes
-        int remainingCharCount = charCount % 4;
+        final int remainingCharCount = charCount % 4;
         charCount -= remainingCharCount;
         
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         
         int bi = 0; // byte index
         int ci = 0; // char index
@@ -30,7 +30,7 @@ public class Base64EncoderImpl implements Base64Encoder {
         // complete 6bit chars
         while (ci < charCount) {
             // 24bit integer made of the next 3 bytes 
-            int val = (bytes[bi++] & 0xff) << 16
+            final int val = (bytes[bi++] & 0xff) << 16
                     | (bytes[bi++] & 0xff) << 8
                     | bytes[bi++] & 0xff;
             
@@ -45,7 +45,7 @@ public class Base64EncoderImpl implements Base64Encoder {
         if (remainingCharCount > 0) {
             if (remainingCharCount == 1) {
                 // 1 byte, 8 bits : 1x6bit char + 1x2bit char
-                int val = bytes[bi] & 0xff;
+                final int val = bytes[bi] & 0xff;
                 // first 6 bits/8
                 builder.append(chars[val >> 2]);
                 // last 2 bits/8, 4 right padding
@@ -54,7 +54,7 @@ public class Base64EncoderImpl implements Base64Encoder {
             } else {
                 // 2 bytes, 16 bits: 2x6bit chars + 1x4bit char
                 // 16bit integer made of last 2 bytes
-                int val = (bytes[bi++] & 0xff) << 8
+                final int val = (bytes[bi++] & 0xff) << 8
                         | (bytes[bi] & 0xff);
                 // first 6 bits/16 (0-5)
                 builder.append(chars[(val >>> 10) & 63]);

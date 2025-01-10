@@ -7,20 +7,20 @@ public class RequestSubtitlesDownload extends RequestWebpage {
 
     private Extension format;
     private String translationLanguage;
-    private boolean fromCaptions;
+    private final boolean fromCaptions;
 
-    public RequestSubtitlesDownload(SubtitlesInfo subtitlesInfo) {
+    public RequestSubtitlesDownload(final SubtitlesInfo subtitlesInfo) {
         super(subtitlesInfo.getUrl());
         this.fromCaptions = subtitlesInfo.isFromCaptions();
     }
 
-    public RequestSubtitlesDownload formatTo(Extension extension) {
+    public RequestSubtitlesDownload formatTo(final Extension extension) {
         this.format = extension;
         return this;
     }
 
-    public RequestSubtitlesDownload translateTo(String language) {
-        if (fromCaptions) {
+    public RequestSubtitlesDownload translateTo(final String language) {
+        if (this.fromCaptions) {
             this.translationLanguage = language;
         }
         return this;
@@ -28,12 +28,12 @@ public class RequestSubtitlesDownload extends RequestWebpage {
 
     @Override
     public String getDownloadUrl() {
-        String downloadUrl = url;
-        if (format != null && format.isSubtitle()) {
-            downloadUrl += "&fmt=" + format.value();
+        String downloadUrl = this.url;
+        if (this.format != null && this.format.isSubtitle()) {
+            downloadUrl += "&fmt=" + this.format.value();
         }
-        if (translationLanguage != null && !translationLanguage.isEmpty()) {
-            downloadUrl += "&tlang=" + translationLanguage;
+        if (this.translationLanguage != null && !this.translationLanguage.isEmpty()) {
+            downloadUrl += "&tlang=" + this.translationLanguage;
         }
         return downloadUrl;
     }

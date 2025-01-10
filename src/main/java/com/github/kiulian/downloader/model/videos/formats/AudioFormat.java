@@ -10,18 +10,18 @@ public class AudioFormat extends Format {
     private final Integer audioSampleRate;
     private final AudioQuality audioQuality;
 
-    public AudioFormat(JSONObject json, boolean isAdaptive, String clientVersion) {
+    public AudioFormat(final JSONObject json, final boolean isAdaptive, final String clientVersion) {
         super(json, isAdaptive, clientVersion);
-        audioSampleRate = json.getInteger("audioSampleRate");
-        averageBitrate = json.getInteger("averageBitrate");
+        this.audioSampleRate = json.getInteger("audioSampleRate");
+        this.averageBitrate = json.getInteger("averageBitrate");
 
         AudioQuality audioQuality = null;
         if (json.containsKey("audioQuality")) {
-            String[] split = json.getString("audioQuality").split("_");
-            String quality = split[split.length - 1].toLowerCase();
+            final String[] split = json.getString("audioQuality").split("_");
+            final String quality = split[split.length - 1].toLowerCase();
             try {
                 audioQuality = AudioQuality.valueOf(quality);
-            } catch (IllegalArgumentException ignore) {
+            } catch (final IllegalArgumentException ignore) {
             }
         }
         this.audioQuality = audioQuality;
@@ -33,14 +33,14 @@ public class AudioFormat extends Format {
     }
 
     public Integer averageBitrate() {
-        return averageBitrate;
+        return this.averageBitrate;
     }
 
     public AudioQuality audioQuality() {
-        return audioQuality != null ? audioQuality : itag.audioQuality();
+        return this.audioQuality != null ? this.audioQuality : this.itag.audioQuality();
     }
 
     public Integer audioSampleRate() {
-        return audioSampleRate;
+        return this.audioSampleRate;
     }
 }

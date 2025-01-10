@@ -5,14 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 // Video item of a list (playlist, or search result).
 public class AbstractListVideoDetails extends AbstractVideoDetails {
 
-    public AbstractListVideoDetails(JSONObject json) {
+    public AbstractListVideoDetails(final JSONObject json) {
         super(json);
-        author = Utils.parseRuns(json.getJSONObject("shortBylineText"));
-        JSONObject jsonTitle = json.getJSONObject("title");
+        this.author = Utils.parseRuns(json.getJSONObject("shortBylineText"));
+        final JSONObject jsonTitle = json.getJSONObject("title");
         if (jsonTitle.containsKey("simpleText")) {
-            title = jsonTitle.getString("simpleText");
+            this.title = jsonTitle.getString("simpleText");
         } else {
-            title = Utils.parseRuns(jsonTitle);
+            this.title = Utils.parseRuns(jsonTitle);
         }
     }
 }

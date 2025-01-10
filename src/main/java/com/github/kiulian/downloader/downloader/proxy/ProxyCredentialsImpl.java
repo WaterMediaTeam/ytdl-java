@@ -9,13 +9,13 @@ public class ProxyCredentialsImpl implements ProxyCredentials {
     private final Map<String, PasswordAuthentication> credentials = new ConcurrentHashMap<>();
 
     @Override
-    public PasswordAuthentication getAuthentication(String host, int port) {
-        String key = host + ":" + port;
-        return credentials.get(key);
+    public PasswordAuthentication getAuthentication(final String host, final int port) {
+        final String key = host + ":" + port;
+        return this.credentials.get(key);
     }
 
     @Override
-    public void addAuthentication(String host, int port, String userName, String password) {
-        credentials.put(host + ":" + port, new PasswordAuthentication(userName, password.toCharArray()));
+    public void addAuthentication(final String host, final int port, final String userName, final String password) {
+        this.credentials.put(host + ":" + port, new PasswordAuthentication(userName, password.toCharArray()));
     }
 }

@@ -10,11 +10,11 @@ public enum SortField {
 
     private final byte value;
 
-    private SortField(int value) {
+    SortField(final int value) {
         this.value = (byte) value;
     }
 
     public byte value() {
-        return value;
+        return this.value;
     }
 }

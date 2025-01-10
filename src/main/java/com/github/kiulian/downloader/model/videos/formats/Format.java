@@ -24,87 +24,87 @@ public abstract class Format {
     protected final Long approxDurationMs;
     protected final String clientVersion;
 
-    protected Format(JSONObject json, boolean isAdaptive, String clientVersion) {
+    protected Format(final JSONObject json, final boolean isAdaptive, final String clientVersion) {
         this.isAdaptive = isAdaptive;
         this.clientVersion = clientVersion;
 
         Itag itag;
         try {
             itag = Itag.valueOf("i" + json.getInteger("itag"));
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             e.printStackTrace();
             itag = Itag.unknown;
             itag.setId(json.getIntValue("itag"));
         }
         this.itag = itag;
 
-        url = json.getString("url").replace("\\u0026", "&");
-        mimeType = json.getString("mimeType");
-        bitrate = json.getInteger("bitrate");
-        contentLength = json.getLong("contentLength");
-        lastModified = json.getLong("lastModified");
-        approxDurationMs = json.getLong("approxDurationMs");
+        this.url = json.getString("url").replace("\\u0026", "&");
+        this.mimeType = json.getString("mimeType");
+        this.bitrate = json.getInteger("bitrate");
+        this.contentLength = json.getLong("contentLength");
+        this.lastModified = json.getLong("lastModified");
+        this.approxDurationMs = json.getLong("approxDurationMs");
 
-        if (mimeType == null || mimeType.isEmpty()) {
-            extension = Extension.UNKNOWN;
-        } else if (mimeType.contains(Extension.MPEG4.value())) {
+        if (this.mimeType == null || this.mimeType.isEmpty()) {
+            this.extension = Extension.UNKNOWN;
+        } else if (this.mimeType.contains(Extension.MPEG4.value())) {
             if (this instanceof AudioFormat)
-                extension = Extension.M4A;
+                this.extension = Extension.M4A;
             else
-                extension = Extension.MPEG4;
-        } else if (mimeType.contains(Extension.WEBM.value())) {
+                this.extension = Extension.MPEG4;
+        } else if (this.mimeType.contains(Extension.WEBM.value())) {
             if (this instanceof AudioFormat)
-                extension = Extension.WEBA;
+                this.extension = Extension.WEBA;
             else
-                extension = Extension.WEBM;
-        } else if (mimeType.contains(Extension.FLV.value())) {
-            extension = Extension.FLV;
-        } else if (mimeType.contains(Extension._3GP.value())) {
-            extension = Extension._3GP;
+                this.extension = Extension.WEBM;
+        } else if (this.mimeType.contains(Extension.FLV.value())) {
+            this.extension = Extension.FLV;
+        } else if (this.mimeType.contains(Extension._3GP.value())) {
+            this.extension = Extension._3GP;
         } else {
-            extension = Extension.UNKNOWN;
+            this.extension = Extension.UNKNOWN;
         }
     }
 
     public abstract String type();
 
     public boolean isAdaptive() {
-        return isAdaptive;
+        return this.isAdaptive;
     }
 
     public String clientVersion() {
-        return clientVersion;
+        return this.clientVersion;
     }
 
     public Itag itag() {
-        return itag;
+        return this.itag;
     }
 
     public Integer bitrate() {
-        return bitrate;
+        return this.bitrate;
     }
 
     public String mimeType() {
-        return mimeType;
+        return this.mimeType;
     }
 
     public String url() {
-        return url;
+        return this.url;
     }
 
     public Long contentLength() {
-        return contentLength;
+        return this.contentLength;
     }
 
     public long lastModified() {
-        return lastModified;
+        return this.lastModified;
     }
 
     public Long duration() {
-        return approxDurationMs;
+        return this.approxDurationMs;
     }
 
     public Extension extension() {
-        return extension;
+        return this.extension;
     }
 }

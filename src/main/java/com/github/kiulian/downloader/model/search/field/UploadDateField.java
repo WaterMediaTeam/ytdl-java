@@ -10,12 +10,12 @@ public enum UploadDateField implements SearchField {
 
     private final byte[] data;
 
-    private UploadDateField(int... data) {
+    UploadDateField(final int... data) {
         this.data = SearchField.convert(data);
     }
 
     @Override
     public byte[] data() {
-        return data;
+        return this.data;
     }
 }

@@ -13,38 +13,38 @@ public class SearchResult {
     private final String autoCorrectedQuery;
 
 
-    public SearchResult(long estimatedResults, List<SearchResultItem> items,
-            Map<QueryElementType, QueryElement> queryElements) {
+    public SearchResult(final long estimatedResults, final List<SearchResultItem> items,
+                        final Map<QueryElementType, QueryElement> queryElements) {
         this.estimatedResults = estimatedResults;
         this.items = items;
-        suggestion = (QuerySuggestion) queryElements.get(QueryElementType.SUGGESTION);
-        refinementList = (QueryRefinementList) queryElements.get(QueryElementType.REFINEMENT_LIST);
+        this.suggestion = (QuerySuggestion) queryElements.get(QueryElementType.SUGGESTION);
+        this.refinementList = (QueryRefinementList) queryElements.get(QueryElementType.REFINEMENT_LIST);
         if (queryElements.containsKey(QueryElementType.AUTO_CORRECTION)) {
-            autoCorrectedQuery = ((QueryAutoCorrection) queryElements.get(QueryElementType.AUTO_CORRECTION)).query();
+            this.autoCorrectedQuery = ((QueryAutoCorrection) queryElements.get(QueryElementType.AUTO_CORRECTION)).query();
         } else {
-            autoCorrectedQuery = null;
+            this.autoCorrectedQuery = null;
         }
     }
 
     public QuerySuggestion suggestion() {
-        return suggestion;
+        return this.suggestion;
     }
 
     public QueryRefinementList refinements() {
-        return refinementList;
+        return this.refinementList;
     }
 
     public boolean isAutoCorrected() {
-        return autoCorrectedQuery != null;
+        return this.autoCorrectedQuery != null;
     }
 
     public String autoCorrectedQuery() {
-        return autoCorrectedQuery;
+        return this.autoCorrectedQuery;
     }
 
     public List<SearchResultVideoDetails> videos() {
-        List<SearchResultVideoDetails> videos = new LinkedList<>();
-        for (SearchResultItem item : items) {
+        final List<SearchResultVideoDetails> videos = new LinkedList<>();
+        for (final SearchResultItem item : this.items) {
             if (item.type() == SearchResultItemType.VIDEO) {
                 videos.add(item.asVideo());
             }
@@ -53,8 +53,8 @@ public class SearchResult {
     }
 
     public List<SearchResultChannelDetails> channels() {
-        List<SearchResultChannelDetails> channels = new LinkedList<>();
-        for (SearchResultItem item : items) {
+        final List<SearchResultChannelDetails> channels = new LinkedList<>();
+        for (final SearchResultItem item : this.items) {
             if (item.type() == SearchResultItemType.CHANNEL) {
                 channels.add(item.asChannel());
             }
@@ -63,8 +63,8 @@ public class SearchResult {
     }
 
     public List<SearchResultPlaylistDetails> playlists() {
-        List<SearchResultPlaylistDetails> videos = new LinkedList<>();
-        for (SearchResultItem item : items) {
+        final List<SearchResultPlaylistDetails> videos = new LinkedList<>();
+        for (final SearchResultItem item : this.items) {
             if (item.type() == SearchResultItemType.PLAYLIST) {
                 videos.add(item.asPlaylist());
             }
@@ -73,8 +73,8 @@ public class SearchResult {
     }
 
     public List<SearchResultShelf> shelves() {
-        List<SearchResultShelf> shelves = new LinkedList<>();
-        for (SearchResultItem item : items) {
+        final List<SearchResultShelf> shelves = new LinkedList<>();
+        for (final SearchResultItem item : this.items) {
             if (item.type() == SearchResultItemType.SHELF) {
                 shelves.add(item.asShelf());
             }
@@ -87,10 +87,10 @@ public class SearchResult {
     }
 
     public long estimatedResults() {
-        return estimatedResults;
+        return this.estimatedResults;
     }
 
     public List<SearchResultItem> items() {
-        return items;
+        return this.items;
     }
 }

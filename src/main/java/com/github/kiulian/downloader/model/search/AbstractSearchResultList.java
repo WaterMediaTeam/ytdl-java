@@ -13,21 +13,21 @@ public abstract class AbstractSearchResultList implements SearchResultItem {
 
     public AbstractSearchResultList() {}
 
-    public AbstractSearchResultList(JSONObject json) {
-        title = json.getJSONObject("title").getString("simpleText");
-        author = Utils.parseRuns(json.getJSONObject("shortBylineText"));
+    public AbstractSearchResultList(final JSONObject json) {
+        this.title = json.getJSONObject("title").getString("simpleText");
+        this.author = Utils.parseRuns(json.getJSONObject("shortBylineText"));
     }
 
     @Override
     public String title() {
-        return title;
+        return this.title;
     }
 
     public List<String> thumbnails() {
-        return thumbnails;
+        return this.thumbnails;
     }
 
     public String author() {
-        return author;
+        return this.author;
     }
 }

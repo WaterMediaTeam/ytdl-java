@@ -7,14 +7,14 @@ public class QuerySuggestion extends Searchable implements QueryElement {
 
     private final String title;
 
-    public QuerySuggestion(JSONObject json) {
+    public QuerySuggestion(final JSONObject json) {
         super(json);
-        title = Utils.parseRuns(json.getJSONObject("didYouMean"));
+        this.title = Utils.parseRuns(json.getJSONObject("didYouMean"));
     }
 
     @Override
     public String title() {
-        return title;
+        return this.title;
     }
 
     @Override
@@ -23,12 +23,12 @@ public class QuerySuggestion extends Searchable implements QueryElement {
     }
 
     @Override
-    protected String extractQuery(JSONObject json) {
+    protected String extractQuery(final JSONObject json) {
         return Utils.parseRuns(json.getJSONObject("correctedQuery"));
     }
 
     @Override
-    protected String extractSearchPath(JSONObject json) {
+    protected String extractSearchPath(final JSONObject json) {
         return json.getJSONObject("correctedQueryEndpoint")
                 .getJSONObject("commandMetadata")
                 .getJSONObject("webCommandMetadata")

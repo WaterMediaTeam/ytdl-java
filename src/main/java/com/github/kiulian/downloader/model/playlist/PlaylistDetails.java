@@ -3,13 +3,13 @@ package com.github.kiulian.downloader.model.playlist;
 
 public class PlaylistDetails {
 
-    private String playlistId;
-    private String title;
-    private String author;
-    private int videoCount;
-    private long viewCount;
+    private final String playlistId;
+    private final String title;
+    private final String author;
+    private final int videoCount;
+    private final long viewCount;
 
-    public PlaylistDetails(String playlistId, String title, String author, int videoCount, long viewCount) {
+    public PlaylistDetails(final String playlistId, final String title, final String author, final int videoCount, final long viewCount) {
         super();
         this.playlistId = playlistId;
         this.title = title;
@@ -19,22 +19,22 @@ public class PlaylistDetails {
     }
 
     public String playlistId() {
-        return playlistId;
+        return this.playlistId;
     }
 
     public String title() {
-        return title;
+        return this.title;
     }
 
     public String author() {
-        return author;
+        return this.author;
     }
 
     public int videoCount() {
-        return videoCount;
+        return this.videoCount;
     }
 
     public long viewCount() {
-        return viewCount;
+        return this.viewCount;
     }
 }

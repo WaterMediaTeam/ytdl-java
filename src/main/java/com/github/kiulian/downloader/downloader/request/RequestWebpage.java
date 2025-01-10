@@ -7,11 +7,11 @@ public class RequestWebpage extends RequestRaw<RequestWebpage> {
     private final String method;
     private final String body;
 
-    public RequestWebpage(String url) {
+    public RequestWebpage(final String url) {
         this(url, "GET", null);
     }
 
-    public RequestWebpage(String url, String method, String body) {
+    public RequestWebpage(final String url, final String method, final String body) {
         this.url = url;
         this.method = method;
         this.body = body;
@@ -19,14 +19,14 @@ public class RequestWebpage extends RequestRaw<RequestWebpage> {
 
     @Override
     public String getDownloadUrl() {
-        return url;
+        return this.url;
     }
 
     public String getMethod() {
-        return method;
+        return this.method;
     }
 
     public String getBody() {
-        return body;
+        return this.body;
     }
 }

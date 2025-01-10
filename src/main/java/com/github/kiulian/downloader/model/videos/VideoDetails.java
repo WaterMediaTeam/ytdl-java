@@ -17,50 +17,50 @@ public class VideoDetails extends AbstractVideoDetails {
     private boolean isLiveContent;
     private String liveUrl;
 
-    public VideoDetails(String videoId) {
+    public VideoDetails(final String videoId) {
         this.videoId = videoId;
     }
 
-    public VideoDetails(JSONObject json, String liveHLSUrl) {
+    public VideoDetails(final JSONObject json, final String liveHLSUrl) {
         super(json);
-        title = json.getString("title");
-        author = json.getString("author");
-        isLive = json.getBooleanValue("isLive");
+        this.title = json.getString("title");
+        this.author = json.getString("author");
+        this.isLive = json.getBooleanValue("isLive");
 
-        keywords = json.containsKey("keywords") ? json.getJSONArray("keywords").toJavaList(String.class) : new ArrayList<String>();
-        shortDescription = json.getString("shortDescription");
-        averageRating = json.getIntValue("averageRating");
-        viewCount = json.getLongValue("viewCount");
-        isLiveContent = json.getBooleanValue("isLiveContent");
-        liveUrl = liveHLSUrl;
+        this.keywords = json.containsKey("keywords") ? json.getJSONArray("keywords").toJavaList(String.class) : new ArrayList<String>();
+        this.shortDescription = json.getString("shortDescription");
+        this.averageRating = json.getIntValue("averageRating");
+        this.viewCount = json.getLongValue("viewCount");
+        this.isLiveContent = json.getBooleanValue("isLiveContent");
+        this.liveUrl = liveHLSUrl;
     }
 
     @Override
     public boolean isDownloadable()  {
-        return !isLive() && !(isLiveContent && lengthSeconds() == 0);
+        return !this.isLive() && !(this.isLiveContent && this.lengthSeconds() == 0);
     }
 
     public List<String> keywords() {
-        return keywords;
+        return this.keywords;
     }
 
     public String description() {
-        return shortDescription;
+        return this.shortDescription;
     }
 
     public long viewCount() {
-        return viewCount;
+        return this.viewCount;
     }
 
     public int averageRating() {
-        return averageRating;
+        return this.averageRating;
     }
 
     public boolean isLiveContent() {
-        return isLiveContent;
+        return this.isLiveContent;
     }
 
     public String liveUrl() {
-        return liveUrl;
+        return this.liveUrl;
     }
 }

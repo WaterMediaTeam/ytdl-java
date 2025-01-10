@@ -2,33 +2,33 @@ package com.github.kiulian.downloader;
 
 
 public abstract class YoutubeException extends Exception {
-    private YoutubeException(String message) {
+    private YoutubeException(final String message) {
         super(message);
     }
 
     public static class DownloadException extends YoutubeException {
 
-        public DownloadException(String message) {
+        public DownloadException(final String message) {
             super(message);
         }
     }
 
     public static class BadPageException extends YoutubeException {
 
-        public BadPageException(String message) {
+        public BadPageException(final String message) {
             super(message);
         }
     }
 
     public static class CipherException extends YoutubeException {
 
-        public CipherException(String message) {
+        public CipherException(final String message) {
             super(message);
         }
     }
 
     public static class InvalidJsUrlException extends YoutubeException.CipherException {
-        public InvalidJsUrlException(String message) {
+        public InvalidJsUrlException(final String message) {
             super(message);
         }
     }

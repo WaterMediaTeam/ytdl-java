@@ -3,7 +3,7 @@ package com.github.kiulian.downloader.downloader.client;
 import com.alibaba.fastjson.JSONObject;
 
 public interface Client {
-    static Client of(String name, String version, JSONObject body, QueryParameter... parameters) {
+    static Client of(final String name, final String version, final JSONObject body, final QueryParameter... parameters) {
         final JSONObject client = body.getJSONObject("context").getJSONObject("client");
 
         client.fluentPut("clientName", name);
@@ -45,7 +45,7 @@ public interface Client {
         };
     }
 
-    static Client of(String name, String version, JSONObject body) {
+    static Client of(final String name, final String version, final JSONObject body) {
         return of(name, version, body, new QueryParameter[0]);
     }
 
@@ -74,11 +74,11 @@ public interface Client {
         return new JSONObject().fluentPut("context", context);
     }
 
-    static QueryParameter queryParam(String path, String key, String value) {
+    static QueryParameter queryParam(final String path, final String key, final String value) {
         return new QueryParameter(path, key, value);
     }
 
-    static QueryParameter queryParam(String key, String value) {
+    static QueryParameter queryParam(final String key, final String value) {
         return new QueryParameter(key, value);
     }
 
@@ -87,13 +87,13 @@ public interface Client {
         final String value;
         final String key;
 
-        QueryParameter(String path, String key, String value) {
+        QueryParameter(final String path, final String key, final String value) {
             this.path = path.split("/");
             this.value = value;
             this.key = key;
         }
 
-        QueryParameter(String key, String value) {
+        QueryParameter(final String key, final String value) {
             this("", key, value);
         }
     }

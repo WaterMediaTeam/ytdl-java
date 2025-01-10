@@ -11,18 +11,18 @@ public class SearchResultPlaylistDetails extends AbstractSearchResultList {
     private final String playlistId;
     private final int videoCount;
 
-    public SearchResultPlaylistDetails(JSONObject json) {
+    public SearchResultPlaylistDetails(final JSONObject json) {
         super(json);
-        playlistId = json.getString("playlistId");
-        JSONArray thumbnailGroups = json.getJSONArray("thumbnails");
-        thumbnails = new LinkedList<>();
+        this.playlistId = json.getString("playlistId");
+        final JSONArray thumbnailGroups = json.getJSONArray("thumbnails");
+        this.thumbnails = new LinkedList<>();
         for (int i = 0; i < thumbnailGroups.size(); i++) {
-            thumbnails.addAll(Utils.parseThumbnails(thumbnailGroups.getJSONObject(i)));
+            this.thumbnails.addAll(Utils.parseThumbnails(thumbnailGroups.getJSONObject(i)));
         }
         if (json.containsKey("videoCount")) {
-            videoCount = Integer.parseInt(json.getString("videoCount"));
+            this.videoCount = Integer.parseInt(json.getString("videoCount"));
         } else {
-            videoCount = -1;
+            this.videoCount = -1;
         }
     }
 
@@ -37,10 +37,10 @@ public class SearchResultPlaylistDetails extends AbstractSearchResultList {
     }
 
     public String playlistId() {
-        return playlistId;
+        return this.playlistId;
     }
 
     public int videoCount() {
-        return videoCount;
+        return this.videoCount;
     }
 }

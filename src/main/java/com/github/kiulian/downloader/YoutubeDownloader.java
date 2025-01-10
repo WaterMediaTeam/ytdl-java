@@ -32,71 +32,71 @@ public class YoutubeDownloader {
         this(Config.buildDefault());
     }
 
-    public YoutubeDownloader(Config config) {
+    public YoutubeDownloader(final Config config) {
         this.config = config;
         this.downloader = new DownloaderImpl(config);
-        this.parser = new ParserImpl(config, downloader, new ExtractorImpl(downloader), new CachedCipherFactory(downloader));
+        this.parser = new ParserImpl(config, this.downloader, new ExtractorImpl(this.downloader), new CachedCipherFactory(this.downloader));
     }
 
-    public YoutubeDownloader(Config config, Downloader downloader) {
+    public YoutubeDownloader(final Config config, final Downloader downloader) {
         this(config, downloader, new ParserImpl(config, downloader, new ExtractorImpl(downloader), new CachedCipherFactory(downloader)));
     }
 
-    public YoutubeDownloader(Config config, Downloader downloader, Parser parser) {
+    public YoutubeDownloader(final Config config, final Downloader downloader, final Parser parser) {
         this.config = config;
         this.parser = parser;
         this.downloader = downloader;
     }
 
     public Config getConfig() {
-        return config;
+        return this.config;
     }
 
-    public Response<VideoInfo> getVideoInfo(RequestVideoInfo request) {
-        return parser.parseVideo(request);
+    public Response<VideoInfo> getVideoInfo(final RequestVideoInfo request) {
+        return this.parser.parseVideo(request);
     }
 
-    public Response<List<SubtitlesInfo>> getSubtitlesInfo(RequestSubtitlesInfo request) {
-        return parser.parseSubtitlesInfo(request);
+    public Response<List<SubtitlesInfo>> getSubtitlesInfo(final RequestSubtitlesInfo request) {
+        return this.parser.parseSubtitlesInfo(request);
     }
 
-    public Response<PlaylistInfo> getChannelUploads(RequestChannelUploads request) {
-        return parser.parseChannelsUploads(request);
+    public Response<PlaylistInfo> getChannelUploads(final RequestChannelUploads request) {
+        return this.parser.parseChannelsUploads(request);
     }
 
-    public Response<PlaylistInfo> getPlaylistInfo(RequestPlaylistInfo request) {
-        return parser.parsePlaylist(request);
+    public Response<PlaylistInfo> getPlaylistInfo(final RequestPlaylistInfo request) {
+        return this.parser.parsePlaylist(request);
     }
 
-    public Response<SearchResult> search(RequestSearchResult request) {
-        return parser.parseSearchResult(request);
+    public Response<SearchResult> search(final RequestSearchResult request) {
+        return this.parser.parseSearchResult(request);
     }
 
-    public Response<SearchResult> searchContinuation(RequestSearchContinuation request) {
-        return parser.parseSearchContinuation(request);
+    public Response<SearchResult> searchContinuation(final RequestSearchContinuation request) {
+        return this.parser.parseSearchContinuation(request);
     }
 
-    public Response<SearchResult> search(RequestSearchable request) {
-        return parser.parseSearcheable(request);
+    public Response<SearchResult> search(final RequestSearchable request) {
+        return this.parser.parseSearcheable(request);
     }
 
-    public Response<File> downloadVideoFile(RequestVideoFileDownload request) {
-        File outDir = request.getOutputDirectory();
+    public Response<File> downloadVideoFile(final RequestVideoFileDownload request) {
+        final File outDir = request.getOutputDirectory();
         try {
             createOutDir(outDir);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return ResponseImpl.error(e);
         }
 
-        return downloader.downloadVideoAsFile(request);
+        return this.downloader.downloadVideoAsFile(request);
     }
 
-    public Response<Void> downloadVideoStream(RequestVideoStreamDownload request) {
-        return downloader.downloadVideoAsStream(request);
+    public Response<Void> downloadVideoStream(final RequestVideoStreamDownload request) {
+        return this.downloader.downloadVideoAsStream(request);
     }
 
-    public Response<String> downloadSubtitle(RequestWebpage request) {
-        return downloader.downloadWebpage(request);
+    public Response<String> downloadSubtitle(final RequestWebpage request) {
+        return this.downloader.downloadWebpage(request);
     }
 
 }

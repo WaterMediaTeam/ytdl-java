@@ -26,12 +26,12 @@ public class Extension {
 
     private final String value;
 
-    private Extension(String value) {
+    private Extension(final String value) {
         this.value = value;
     }
 
     public String value() {
-        return value;
+        return this.value;
     }
 
     public boolean isAudio() {

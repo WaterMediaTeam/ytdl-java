@@ -9,16 +9,16 @@ public class ProxyAuthenticator extends Authenticator {
 
     private final ProxyCredentials proxyCredentials;
 
-    public ProxyAuthenticator(ProxyCredentials proxyCredentials) {
+    public ProxyAuthenticator(final ProxyCredentials proxyCredentials) {
         this.proxyCredentials = proxyCredentials;
     }
 
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
-        return proxyCredentials.getAuthentication(getRequestingHost(), getRequestingPort());
+        return this.proxyCredentials.getAuthentication(this.getRequestingHost(), this.getRequestingPort());
     }
 
-    public static synchronized void setDefault(ProxyAuthenticator authenticator) {
+    public static synchronized void setDefault(final ProxyAuthenticator authenticator) {
         instance = authenticator;
         Authenticator.setDefault(instance);
     }
@@ -27,7 +27,7 @@ public class ProxyAuthenticator extends Authenticator {
         return instance;
     }
 
-    public static void addAuthentication(String host, int port, String userName, String password) {
+    public static void addAuthentication(final String host, final int port, final String userName, final String password) {
         if (instance == null) {
             throw new NullPointerException("ProxyAuthenticator instance is null. Use ProxyAuthenticator.setDefault() to init");
         }

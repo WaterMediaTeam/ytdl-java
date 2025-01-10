@@ -12,107 +12,107 @@ public class RequestSearchResult extends Request<RequestSearchResult, SearchResu
 
     private final String query;
     private boolean forceExactQuery;
-    private Map<Integer, SearchField> filterFields = new HashMap<>();
+    private final Map<Integer, SearchField> filterFields = new HashMap<>();
     private SortField sortField;
 
-    public RequestSearchResult(String query) {
+    public RequestSearchResult(final String query) {
         super();
         this.query = query;
     }
 
     public String encodeParameters() {
-        if (sortField == null && filterFields.isEmpty() && !forceExactQuery) {
+        if (this.sortField == null && this.filterFields.isEmpty() && !this.forceExactQuery) {
             return null;
         }
         
         int filterLength = 0;
         List<SearchField> filters = null;
-        if (!filterFields.isEmpty()) {
-            filters = new ArrayList<>(filterFields.values());
+        if (!this.filterFields.isEmpty()) {
+            filters = new ArrayList<>(this.filterFields.values());
             filters.sort(Comparator.comparingInt(SearchField::category));
-            for (SearchField filter : filters) {
+            for (final SearchField filter : filters) {
                 filterLength += filter.length();
             }
         }
         
         int length = filterLength;
-        if (sortField != null) {
+        if (this.sortField != null) {
             length += 2;
         }
         if (filters != null) {
             length += 2;
         }
-        if (forceExactQuery) {
+        if (this.forceExactQuery) {
             length += FORCED_DATA.length;
         }
         
         final byte[] bytes = new byte[length];
         int i = 0;
-        if (sortField != null) {
+        if (this.sortField != null) {
             bytes[i++] = 8;
-            bytes[i++] = sortField.value();
+            bytes[i++] = this.sortField.value();
         }
         if (filters != null) {
             bytes[i++] = 18;
             bytes[i++] = (byte) filterLength;
-            for (SearchField filter : filters) {
+            for (final SearchField filter : filters) {
                 System.arraycopy(filter.data(), 0, bytes, i, filter.length());
                 i += filter.length();
             }
         }
-        if (forceExactQuery) {
+        if (this.forceExactQuery) {
             System.arraycopy(FORCED_DATA, 0, bytes, i, FORCED_DATA.length);
         }
         
-        String encoded = Base64Encoder.getInstance().encodeToString(bytes);
+        final String encoded = Base64Encoder.getInstance().encodeToString(bytes);
         return encoded.replace("=", "%253D");
     }
 
     public String query() {
-        return query;
+        return this.query;
     }
 
-    public RequestSearchResult forceExactQuery(boolean forceExactQuery) {
+    public RequestSearchResult forceExactQuery(final boolean forceExactQuery) {
         this.forceExactQuery = forceExactQuery;
         return this;
     }
 
-    public RequestSearchResult filter(SearchField... field) {
-        for (SearchField filter : field) {
-            filterFields.put(filter.category(), filter);
+    public RequestSearchResult filter(final SearchField... field) {
+        for (final SearchField filter : field) {
+            this.filterFields.put(filter.category(), filter);
         }
         return this;
     }
 
-    public RequestSearchResult uploadedThis(UploadDateField uploadDateField) {
-        put(uploadDateField);
+    public RequestSearchResult uploadedThis(final UploadDateField uploadDateField) {
+        this.put(uploadDateField);
         return this;
     }
 
-    public RequestSearchResult type(TypeField typeField) {
-        put(typeField);
+    public RequestSearchResult type(final TypeField typeField) {
+        this.put(typeField);
         return this;
     }
 
-    public RequestSearchResult during(DurationField durationField) {
-        put(durationField);
+    public RequestSearchResult during(final DurationField durationField) {
+        this.put(durationField);
         return this;
     }
 
-    public RequestSearchResult match(FeatureField... featuresField) {
-        return filter(featuresField);
+    public RequestSearchResult match(final FeatureField... featuresField) {
+        return this.filter(featuresField);
     }
 
-    public RequestSearchResult format(FormatField... formatsField) {
-        return filter(formatsField);
+    public RequestSearchResult format(final FormatField... formatsField) {
+        return this.filter(formatsField);
     }
 
-    public RequestSearchResult sortBy(SortField sortField) {
+    public RequestSearchResult sortBy(final SortField sortField) {
         this.sortField = sortField;
         return this;
     }
 
-    private void put(SearchField field) {
-        filterFields.put(field.category(), field);
+    private void put(final SearchField field) {
+        this.filterFields.put(field.category(), field);
     }
 }

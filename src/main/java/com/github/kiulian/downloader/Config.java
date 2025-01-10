@@ -29,13 +29,13 @@ public class Config {
     private static final String DEFAULT_ACCEPT_LANG = "en-US,en;";
     private static final int DEFAULT_RETRY_ON_FAILURE = 0;
 
-    private Map<String, String> headers;
+    private final Map<String, String> headers;
     private int retries;
     private boolean compressionEnabled;
     private ExecutorService executorService;
     private Proxy proxy;
 
-    private Config(Builder builder) {
+    private Config(final Builder builder) {
         this.headers = builder.headers;
         this.retries = builder.retries;
         this.compressionEnabled = builder.compressionEnabled;
@@ -57,35 +57,35 @@ public class Config {
         return new Config();
     }
 
-    public void setRetries(int retries) {
+    public void setRetries(final int retries) {
         this.retries = retries;
     }
 
-    public void setCompressionEnabled(boolean enabled) {
+    public void setCompressionEnabled(final boolean enabled) {
         this.compressionEnabled = enabled;
     }
 
-    public void setHeader(String key, String value) {
-        headers.put(key, value);
+    public void setHeader(final String key, final String value) {
+        this.headers.put(key, value);
     }
 
-    public void setProxy(String host, int port) {
-        proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+    public void setProxy(final String host, final int port) {
+        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
     }
 
-    public void setProxy(String host, int port, String userName, String password) {
+    public void setProxy(final String host, final int port, final String userName, final String password) {
         if (ProxyAuthenticator.getDefault() == null) {
             ProxyAuthenticator.setDefault(new ProxyAuthenticator(new ProxyCredentialsImpl()));
         }
-        proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
         ProxyAuthenticator.addAuthentication(host, port, userName, password);
     }
 
-    public void setExecutorService(ExecutorService executorService) {
+    public void setExecutorService(final ExecutorService executorService) {
         this.executorService = executorService;
     }
 
-    public void setProxyAuthenticator(ProxyCredentials credentials) {
+    public void setProxyAuthenticator(final ProxyCredentials credentials) {
         ProxyAuthenticator.setDefault(new ProxyAuthenticator(credentials));
     }
 
@@ -97,69 +97,69 @@ public class Config {
     }
 
     public int getRetries() {
-        return retries;
+        return this.retries;
     }
 
     public boolean isCompressionEnabled() {
-        return compressionEnabled;
+        return this.compressionEnabled;
     }
 
     public Proxy getProxy() {
-        return proxy;
+        return this.proxy;
     }
 
     public Map<String, String> getHeaders() {
-        return headers;
+        return this.headers;
     }
 
     public static class Builder {
-        private Map<String, String> headers = new HashMap<>();
+        private final Map<String, String> headers = new HashMap<>();
         private int retries = DEFAULT_RETRY_ON_FAILURE;
         private boolean compressionEnabled = true;
         private ExecutorService executorService;
         private Proxy proxy;
 
-        public Builder maxRetries(int maxRetries) {
+        public Builder maxRetries(final int maxRetries) {
             this.retries = maxRetries;
             return this;
         }
 
-        public Builder enableCompression(boolean enable) {
+        public Builder enableCompression(final boolean enable) {
             this.compressionEnabled = enable;
             return this;
         }
 
-        public Builder header(String key, String value) {
-            headers.put(key, value);
+        public Builder header(final String key, final String value) {
+            this.headers.put(key, value);
             return this;
         }
 
-        public Builder proxy(String host, int port) {
-            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+        public Builder proxy(final String host, final int port) {
+            this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
             return this;
         }
 
-        public Builder proxy(String host, int port, String userName, String password) {
+        public Builder proxy(final String host, final int port, final String userName, final String password) {
             if (ProxyAuthenticator.getDefault() == null) {
                 ProxyAuthenticator.setDefault(new ProxyAuthenticator(new ProxyCredentialsImpl()));
             }
-            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+            this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
             ProxyAuthenticator.addAuthentication(host, port, userName, password);
             return this;
         }
 
-        public Builder proxy(Proxy proxy) {
+        public Builder proxy(final Proxy proxy) {
             this.proxy = proxy;
             return this;
         }
 
 
-        public Builder executorService(ExecutorService executorService) {
+        public Builder executorService(final ExecutorService executorService) {
             this.executorService = executorService;
             return this;
         }
 
-        public Builder proxyCredentialsManager(ProxyCredentials credentials) {
+        public Builder proxyCredentialsManager(final ProxyCredentials credentials) {
             ProxyAuthenticator.setDefault(new ProxyAuthenticator(credentials));
             return this;
         }

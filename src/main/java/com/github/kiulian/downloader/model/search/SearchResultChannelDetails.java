@@ -10,17 +10,17 @@ public class SearchResultChannelDetails extends AbstractSearchResultList {
     private final String subscriberCountText;
     private final String description;
 
-    public SearchResultChannelDetails(JSONObject json) {
+    public SearchResultChannelDetails(final JSONObject json) {
         super(json);
-        channelId = json.getString("channelId");
-        videoCountText = Utils.parseRuns(json.getJSONObject("videoCountText"));
+        this.channelId = json.getString("channelId");
+        this.videoCountText = Utils.parseRuns(json.getJSONObject("videoCountText"));
         if (json.containsKey("subscriberCountText")) {
-            subscriberCountText = json.getJSONObject("subscriberCountText").getString("simpleText");
+            this.subscriberCountText = json.getJSONObject("subscriberCountText").getString("simpleText");
         } else {
-            subscriberCountText = null;
+            this.subscriberCountText = null;
         }
-        description = Utils.parseRuns(json.getJSONObject("descriptionSnippet"));
-        thumbnails = Utils.parseThumbnails(json.getJSONObject("thumbnail"));
+        this.description = Utils.parseRuns(json.getJSONObject("descriptionSnippet"));
+        this.thumbnails = Utils.parseThumbnails(json.getJSONObject("thumbnail"));
     }
 
     @Override
@@ -33,18 +33,18 @@ public class SearchResultChannelDetails extends AbstractSearchResultList {
         return this;
     }
     public String channelId() {
-        return channelId;
+        return this.channelId;
     }
 
     public String videoCountText() {
-        return videoCountText;
+        return this.videoCountText;
     }
 
     public String subscriberCountText() {
-        return subscriberCountText;
+        return this.subscriberCountText;
     }
 
     public String description() {
-        return description;
+        return this.description;
     }
 }

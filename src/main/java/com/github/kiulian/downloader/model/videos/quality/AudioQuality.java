@@ -11,12 +11,12 @@ public enum AudioQuality {
 
     private final Integer order;
 
-    AudioQuality(int order) {
+    AudioQuality(final int order) {
         this.order = order;
     }
 
-    public int compare(AudioQuality quality) {
+    public int compare(final AudioQuality quality) {
         if (this == quality) return 0;
-        return order.compareTo(quality.order);
+        return this.order.compareTo(quality.order);
     }
 }

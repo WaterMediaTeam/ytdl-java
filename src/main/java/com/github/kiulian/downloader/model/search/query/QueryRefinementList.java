@@ -10,22 +10,22 @@ public class QueryRefinementList extends ArrayList<QueryRefinement> implements Q
 
     private final String title;
 
-    public QueryRefinementList(JSONObject json) {
+    public QueryRefinementList(final JSONObject json) {
         super(json.getJSONArray("cards").size());
-        title = json.getJSONObject("header")
+        this.title = json.getJSONObject("header")
                 .getJSONObject("richListHeaderRenderer")
                 .getJSONObject("title")
                 .getString("simpleText");
-        JSONArray jsonCards = json.getJSONArray("cards");
+        final JSONArray jsonCards = json.getJSONArray("cards");
         for (int i = 0; i < jsonCards.size(); i++) {
-            JSONObject jsonRenderer = jsonCards.getJSONObject(i).getJSONObject("searchRefinementCardRenderer"); 
-            add(new QueryRefinement(jsonRenderer));
+            final JSONObject jsonRenderer = jsonCards.getJSONObject(i).getJSONObject("searchRefinementCardRenderer");
+            this.add(new QueryRefinement(jsonRenderer));
         }
     }
 
     @Override
     public String title() {
-        return title;
+        return this.title;
     }
 
     @Override

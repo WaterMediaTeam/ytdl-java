@@ -9,22 +9,22 @@ public class QueryRefinement extends Searchable {
 
     private final List<String> thumbnails;
 
-    public QueryRefinement(JSONObject json) {
+    public QueryRefinement(final JSONObject json) {
         super(json);
-        thumbnails = Utils.parseThumbnails(json.getJSONObject("thumbnail"));
+        this.thumbnails = Utils.parseThumbnails(json.getJSONObject("thumbnail"));
     }
 
     public List<String> thumbnails() {
-        return thumbnails;
+        return this.thumbnails;
     }
 
     @Override
-    protected String extractQuery(JSONObject json) {
+    protected String extractQuery(final JSONObject json) {
         return Utils.parseRuns(json.getJSONObject("query"));
     }
 
     @Override
-    protected String extractSearchPath(JSONObject json) {
+    protected String extractSearchPath(final JSONObject json) {
         return json.getJSONObject("searchEndpoint")
                 .getJSONObject("commandMetadata")
                 .getJSONObject("webCommandMetadata")
