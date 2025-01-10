@@ -6,6 +6,9 @@ import com.github.kiulian.downloader.downloader.Downloader;
 import com.github.kiulian.downloader.downloader.request.RequestWebpage;
 import com.github.kiulian.downloader.downloader.response.Response;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,7 +114,12 @@ public class CachedCipherFactory implements CipherFactory {
      * @throws YoutubeException if list of functions could not be found
      */
     private List<JsFunction> getTransformFunctions(final String js) throws YoutubeException {
-        System.out.println("JS: " + js);
+
+        try (FileOutputStream os = new FileOutputStream(new File("JS_" + System.currentTimeMillis() + ".js"))) {
+            os.write(js.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+
+        }
         final String name = this.getInitialFunctionName(js).replaceAll("[^$A-Za-z0-9_]", "");
 
         final Pattern pattern = Pattern.compile(Pattern.quote(name) + "=function\\(\\w\\)\\{[a-z=\\.\\(\\\"\\)]*;(.*);(?:.+)\\}");
