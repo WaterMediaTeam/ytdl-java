@@ -4,4 +4,4 @@ jdk:
 before_install:
   - ./scripts/jitpack_setup.sh
 install:
-  - gradlew build
+  - ./gradlew build
