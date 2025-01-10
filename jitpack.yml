@@ -2,7 +2,4 @@
 jdk:
   - openjdk21
 before_install:
-  - ./scripts/jitpack_setup.sh
   - chmod +x ./gradlew
-install:
-  - ./gradlew build --parallel

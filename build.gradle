@@ -47,8 +47,11 @@ jar {
 }
 
 publishing {
+    repositories {
+        mavenLocal()
+    }
     publications {
-        mavenJava(MavenPublication) {
+        maven(MavenPublication) {
             from components.java
 
             pom {
