@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+base {
+    archivesName = id
+    libsDirectory = new File("builtJars/")
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Test dependencies
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+
+    // JSON parsing
+    implementation "com.alibaba:fastjson:${fastjsonVersion}"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'Java youtube video downloader'
+                description = 'Java parser for retrieving YouTube video meta info'
+                licenses {
+                    license {
+                        name = 'The Unlicense'
+                        url = 'http://unlicense.org/'
+                        distribution = 'repo'
+                    }
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
