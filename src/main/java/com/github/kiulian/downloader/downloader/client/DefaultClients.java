@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import static com.github.kiulian.downloader.downloader.client.Client.*;
 
 public enum DefaultClients implements Client {
+    WEB_PARENT_TOOLS("1.20220918", baseJson()),
     ANDROID_VR("1.37", baseJson(), queryParam("context/client", "androidSdkVersion", "30")),
     WEB_HEROES("0.1", baseJson()),
     TVHTML5_VR("0.1", baseJson()),
@@ -36,7 +37,6 @@ public enum DefaultClients implements Client {
     XBOXONEGUIDE("1.0", baseJson()),
     WEB_INTERNAL_ANALYTICS("0.1", baseJson()),
     GOOGLE_MEDIA_ACTIONS("0.1", baseJson()),
-    WEB_PARENT_TOOLS("1.20220918", baseJson()),
     IOS_MUSIC("5.26.1", baseJson()),
     ANDROID_MUSIC("5.26.1", baseJson(), queryParam("context/client", "androidSdkVersion", "30")),
     WEB_CREATOR("1.20220918", baseJson()),
